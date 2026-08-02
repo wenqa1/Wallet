@@ -53,6 +53,9 @@ class FakeFaceStore implements CardFaceStore {
       faceVersions[face.faceId] = face.version;
     }
   }
+
+  @override
+  Future<List<CardFace>> cachedFaces() async => savedFaces ?? const [];
 }
 
 CardFace remoteFace(String faceId, {String? imageUrl, int version = 1}) {
@@ -99,8 +102,11 @@ void main() {
         baseUrl: 'https://x.example/v1/',
         faces: [remoteFace('cmb-1', imageUrl: 'cmb.png', version: 3)],
       );
-      api.downloads['https://x.example/v1/cmb.png'] =
-          Uint8List.fromList([1, 2, 3]);
+      api.downloads['https://x.example/v1/cmb.png'] = Uint8List.fromList([
+        1,
+        2,
+        3,
+      ]);
 
       final result = await service.checkForUpdates();
 

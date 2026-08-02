@@ -103,6 +103,7 @@ class TestHarness {
         cardRepositoryProvider.overrideWithValue(repo),
         bankCatalogProvider.overrideWith((ref) async => testBanks),
         bundledFacesProvider.overrideWith((ref) async => testFaces),
+        allFacesProvider.overrideWith((ref) async => testFaces),
       ],
       child: child,
     );

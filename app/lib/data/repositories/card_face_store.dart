@@ -15,4 +15,7 @@ abstract interface class CardFaceStore {
 
   /// 保存新清单（含全部面），并更新版本。
   Future<void> saveManifest(int version, List<CardFace> faces);
+
+  /// 已缓存的全部远程卡面。
+  Future<List<CardFace>> cachedFaces();
 }

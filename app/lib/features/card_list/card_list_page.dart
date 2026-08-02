@@ -22,7 +22,7 @@ class CardListPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final cardsAsync = ref.watch(cardListProvider);
     final banksAsync = ref.watch(bankCatalogProvider);
-    final facesAsync = ref.watch(bundledFacesProvider);
+    final facesAsync = ref.watch(allFacesProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text('卡包')),
