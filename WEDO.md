@@ -56,3 +56,28 @@
 **下一步** → M2：卡面系统深化（内置库选择器 + 自定义卡面编辑器）或 M1 验收（真机/模拟器跑通全流程）
 
 ---
+
+## 2026-08-03 · M2 卡面系统深化
+
+**做了什么**（TDD，2A 数据层 + 2B UI 层各一组 RED→GREEN）
+- **2A 数据层**
+  - `CustomFace` 模型（渐变/前景色/Logo/银行名/背景图路径）+ JSON 序列化
+  - `color_utils`：hex ⇄ Color 互转（CardFace 复用）
+  - `CardFaceResolver`：解析优先级 **自定义 > faceId > 银行默认 > 渐变兜底**，损坏 JSON 容错
+  - `CardFaceWidget` 升级：支持自定义卡面（背景图 / 渐变）与 bundled/remote 图片渲染
+- **2B UI 层**
+  - `showCardFacePicker`：底部弹层浏览内置卡面库，选中高亮，返回 faceId
+  - `CardCustomFaceEditor`：渐变预设 + 前景色切换 + Logo/银行名文字 + **相册背景图**（`CustomFaceImageStore` 复制进应用支持目录防失效）+ 实时预览
+  - 表单集成：卡面预览 + 「选择卡面」「自定义」按钮，保存写入 `faceId` + `customFace` JSON，编辑模式预填
+
+**验证结果**
+- `flutter analyze`：零问题
+- **36 个测试全部通过**（新增：CustomFace 3 + Resolver 5 + 选择器 1 + 编辑器 1 + 表单卡面 2）
+
+**提交**：`bec3f78`(2A RED) → `9c3b117`(2A GREEN) → `fefe423`(2B RED) → `86d2192`(2B GREEN)
+
+**说明**：相册背景图路径已支持并持久化，但 widget 测试未覆盖（image_picker 插件在测试中无法交互），需真机验证。
+
+**下一步** → M3：相机 OCR 读卡（实时识别 + Luhn + 人工确认）；或先真机验收 M1/M2
+
+---

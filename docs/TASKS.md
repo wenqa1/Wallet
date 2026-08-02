@@ -35,13 +35,13 @@
 
 ## M2 · 卡面系统（1.5 周）
 
-- [ ] `CardFace` 模型 + 内置清单 `bundled_manifest.json`（先 12 个主流银行，通用配色 + 行名文字，不复刻银行美术）
-- [ ] `CardFaceWidget`：bundled / remote / gradient 三种渲染
-- [ ] 银行代码 → 默认卡面自动匹配
-- [ ] 卡面选择器（内置库浏览/搜索）
-- [ ] 自定义卡面编辑器（渐变/相册图/文字/Logo）+ 实时预览
-- [ ] `customFace` JSON 持久化与加载
-- [ ] **里程碑验收**：新卡自动带卡面；自定义卡面保存后重启仍在
+- [x] `CardFace` 模型 + 内置清单 `bundled_manifest.json`（19 银行 / 18 卡面，通用配色 + 行名文字，不复刻银行美术）
+- [x] `CardFaceWidget`：bundled / remote / gradient 三种渲染 + 自定义卡面（背景图/渐变）
+- [x] `CardFaceResolver`：自定义 > faceId > 银行默认 > 渐变兜底，损坏 JSON 容错
+- [x] 卡面选择器（内置库浏览，选中高亮）
+- [x] 自定义卡面编辑器（渐变预设/前景色/Logo/银行名/相册背景图）+ 实时预览
+- [x] `customFace` JSON 持久化与加载（存 `CardMeta.customFace`）
+- [ ] **里程碑验收**：新卡自动带卡面；自定义卡面保存后重启仍在（需真机/模拟器验证）
 
 ## M3 · 相机 OCR 读卡（1 周）
 
