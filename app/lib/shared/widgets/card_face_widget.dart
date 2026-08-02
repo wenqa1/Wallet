@@ -16,6 +16,7 @@ class CardFaceWidget extends StatelessWidget {
     super.key,
     required this.face,
     this.customFace,
+    this.imagePath,
     this.nickname,
     this.cardNumberMasked,
     this.balance,
@@ -23,6 +24,10 @@ class CardFaceWidget extends StatelessWidget {
 
   final CardFace face;
   final CustomFace? customFace;
+
+  /// 远程卡面已下载的本地图片路径；提供且存在时用图片渲染。
+  final String? imagePath;
+
   final String? nickname;
   final String? cardNumberMasked;
   final String? balance;
@@ -43,21 +48,61 @@ class CardFaceWidget extends StatelessWidget {
 
   Widget _buildBackground() {
     final custom = customFace;
-    final imagePath = custom?.imagePath;
-    if (imagePath != null && File(imagePath).existsSync()) {
-      return Stack(
-        fit: StackFit.expand,
-        children: [
-          Image.file(File(imagePath), fit: BoxFit.cover),
-          _content(
-            foreground: custom?.foreground ?? Colors.white,
-            logoText: custom?.logoText,
-            bankName: custom?.bankNameText ?? face.bankName,
-          ),
-        ],
+    final customImagePath = custom?.imagePath;
+    // 1. 自定义背景图。
+    if (customImagePath != null && File(customImagePath).existsSync()) {
+      return _imageBackground(
+        image: Image.file(File(customImagePath), fit: BoxFit.cover),
+        foreground: custom?.foreground ?? Colors.white,
+        logoText: custom?.logoText,
+        bankName: custom?.bankNameText ?? face.bankName,
       );
     }
+    // 2. 远程卡面已下载的本地图片。
+    if (imagePath != null && File(imagePath!).existsSync()) {
+      return _imageBackground(
+        image: Image.file(File(imagePath!), fit: BoxFit.cover),
+        foreground: face.foreground ?? Colors.white,
+        logoText: face.logoText,
+        bankName: face.bankName,
+      );
+    }
+    // 3. 远程卡面未下载时的在线兜底。
+    if (face.assetType == 'remote' && face.imageUrl != null) {
+      return _imageBackground(
+        image: Image.network(
+          face.imageUrl!,
+          fit: BoxFit.cover,
+          errorBuilder: (_, _, _) => _gradientBackground(custom),
+        ),
+        foreground: face.foreground ?? Colors.white,
+        logoText: face.logoText,
+        bankName: face.bankName,
+      );
+    }
+    return _gradientBackground(custom);
+  }
 
+  Widget _imageBackground({
+    required Image image,
+    required Color foreground,
+    String? logoText,
+    required String bankName,
+  }) {
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        image,
+        _content(
+          foreground: foreground,
+          logoText: logoText,
+          bankName: bankName,
+        ),
+      ],
+    );
+  }
+
+  Widget _gradientBackground(CustomFace? custom) {
     final colors = (custom != null && custom.colors.isNotEmpty)
         ? custom.colors
         : (face.colors.isNotEmpty

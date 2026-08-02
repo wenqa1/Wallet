@@ -13,10 +13,14 @@ void main() {
   );
 
   testWidgets('远程卡面使用本地图片渲染', (tester) async {
-    final dir = await Directory.systemTemp.createTemp('face_test');
-    addTearDown(() => dir.delete(recursive: true));
-    final imageFile = File('${dir.path}/face.jpg');
-    await imageFile.writeAsBytes(tinyPng);
+    // 文件创建是真实 I/O，需在 runAsync 中执行。
+    late String imagePath;
+    await tester.runAsync(() async {
+      final dir = await Directory.systemTemp.createTemp('face_test');
+      final imageFile = File('${dir.path}/face.jpg');
+      await imageFile.writeAsBytes(tinyPng);
+      imagePath = imageFile.path;
+    });
 
     const face = CardFace(
       faceId: 'remote-1',
@@ -33,7 +37,7 @@ void main() {
         home: Scaffold(
           body: CardFaceWidget(
             face: face,
-            imagePath: imageFile.path,
+            imagePath: imagePath,
             nickname: '工资卡',
           ),
         ),

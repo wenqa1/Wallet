@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../app/providers.dart';
 import '../../core/constants/bank_catalog.dart';
 import '../../core/face/card_face_resolver.dart';
 import '../../data/local/app_database.dart';
@@ -72,14 +74,27 @@ class _CardCarouselState extends State<CardCarousel> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: CardFlipView(
-        front: CardFaceWidget(
-          face: resolution.face,
-          customFace: resolution.custom,
-          nickname: card.nickname,
-          cardNumberMasked: card.last4 == null ? null : '•••• ${card.last4}',
-          balance: card.balance == null
-              ? null
-              : '${card.currency} ${card.balance!.toStringAsFixed(2)}',
+        front: Consumer(
+          builder: (context, ref, _) {
+            // 远程卡面：已下载则用本地图片渲染。
+            final imagePath = resolution.face.assetType == 'remote'
+                ? ref
+                      .watch(remoteFacePathProvider(resolution.face.faceId))
+                      .valueOrNull
+                : null;
+            return CardFaceWidget(
+              face: resolution.face,
+              customFace: resolution.custom,
+              imagePath: imagePath,
+              nickname: card.nickname,
+              cardNumberMasked: card.last4 == null
+                  ? null
+                  : '•••• ${card.last4}',
+              balance: card.balance == null
+                  ? null
+                  : '${card.currency} ${card.balance!.toStringAsFixed(2)}',
+            );
+          },
         ),
         back: ColoredBox(
           color: Theme.of(context).colorScheme.surfaceContainerHighest,

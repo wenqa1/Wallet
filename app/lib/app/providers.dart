@@ -79,6 +79,14 @@ final cachedFacesProvider = FutureProvider<List<CardFace>>((ref) {
   return ref.watch(cardFaceStoreProvider).cachedFaces();
 });
 
+/// 某张远程卡面的本地图片路径（已下载时）。
+final remoteFacePathProvider = FutureProvider.family<String?, String>((
+  ref,
+  faceId,
+) {
+  return ref.watch(cardFaceStoreProvider).imagePath(faceId);
+});
+
 /// 生效卡面列表 = 内置 + 远程缓存。
 final allFacesProvider = FutureProvider<List<CardFace>>((ref) async {
   final bundled = await ref.watch(bundledFacesProvider.future);

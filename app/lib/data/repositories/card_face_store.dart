@@ -18,4 +18,7 @@ abstract interface class CardFaceStore {
 
   /// 已缓存的全部远程卡面。
   Future<List<CardFace>> cachedFaces();
+
+  /// 某张远程卡面本地图片路径；未下载返回 null。
+  Future<String?> imagePath(String faceId);
 }

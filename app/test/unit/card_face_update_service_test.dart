@@ -56,6 +56,10 @@ class FakeFaceStore implements CardFaceStore {
 
   @override
   Future<List<CardFace>> cachedFaces() async => savedFaces ?? const [];
+
+  @override
+  Future<String?> imagePath(String faceId) async =>
+      savedImages.containsKey(faceId) ? '/tmp/$faceId.jpg' : null;
 }
 
 CardFace remoteFace(String faceId, {String? imageUrl, int version = 1}) {

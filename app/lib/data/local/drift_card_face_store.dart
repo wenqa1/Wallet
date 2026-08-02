@@ -50,6 +50,13 @@ class DriftCardFaceStore implements CardFaceStore {
   }
 
   @override
+  Future<String?> imagePath(String faceId) async {
+    final dir = await _facesDir();
+    final file = File('${dir.path}/${imageFileName(faceId)}');
+    return file.existsSync() ? file.path : null;
+  }
+
+  @override
   Future<void> saveManifest(int version, List<CardFace> faces) async {
     await _db.transaction(() async {
       await _db.delete(_db.cardFaceCache).go();
