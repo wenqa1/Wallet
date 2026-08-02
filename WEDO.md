@@ -201,3 +201,25 @@
 **下一步** → M6：图标/上架材料 + TestFlight/巨魔安装全流程验收
 
 ---
+
+## 2026-08-03 04:10 · M6 上架准备
+
+**做了什么**
+- **6A 图标**：`tools/generate_app_icon.py`（PIL 银行卡主题图标）→ `flutter_launcher_icons` 生成 iOS/Android 全尺寸图标；App 名称「卡包」、版本 0.1.0+1
+- **6B 隐私页**：`PrivacyPage`（数据本地存储/权限/联网/卡面资源声明）+ 路由 `/privacy` + 设置入口
+- **6C 覆盖率**：`flutter test --coverage` 核查 + `tools/coverage_report.py` 报告工具
+
+**覆盖率结论**
+- 全局行覆盖率约 47%；**核心业务逻辑 100%**（luhn/遮挡/颜色/模型/更新服务/仓储/扫描解析器/控制器/RevealNotifier 等 15 个文件）
+- 0% 的均为平台边界（Drift 真库/Keychain/相机/image_picker/SharedPreferences），需真机集成测试
+
+**验证**：analyze 零问题；**77 个测试全通过**（新增 3：bank_catalog 2 + settings_store 1 + privacy 1）
+
+**待用户（无法代劳）**
+1. App Store Connect 隐私标签（App Privacy）填写
+2. TestFlight / 巨魔内测真机回归（OCR、动画、后台遮挡、深色模式）
+3. App Store 提交 + 审核材料
+
+**下一步** → 真机验收全流程（M3 OCR / M4 轮播翻转 / M5 网络更新）
+
+---

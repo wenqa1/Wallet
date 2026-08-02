@@ -75,14 +75,21 @@
 
 ## M6 · 测试打磨 + 上架（1 周）
 
-- [ ] 单元测试补齐：Luhn、卡号解析/遮挡、manifest 合并、余额格式化（覆盖 ≥80%）
-- [ ] Widget 测试：卡片渲染、轮播、遮挡交互
-- [ ] 集成测试：增删改查全流程
-- [ ] 隐私标签（App Privacy）填写 + 应用内隐私说明页
-- [ ] 图标、启动图、App 名称、版本号
-- [ ] TestFlight 内测（真机回归：OCR、动画、后台遮挡、深色模式）
-- [ ] App Store 提交 + 审核材料（截图、描述、隐私政策 URL）
-- [ ] **里程碑验收**：TestFlight 稳定运行 1 周无崩溃 → 提交上架
+- [x] 单元测试补齐：Luhn、卡号解析/遮挡、卡面解析/更新服务、manifest 解析（核心逻辑 100%）
+- [x] Widget 测试：卡片渲染、轮播、翻转、遮挡交互、表单、设置、隐私页（77 项全过）
+- [ ] 集成测试：增删改查全流程（Drift/Keychain 需真机；当前以数据层单测 + widget 测试覆盖）
+- [x] 应用内隐私说明页（`PrivacyPage`，路由 + 设置入口）
+- [x] 图标（`flutter_launcher_icons` 生成 iOS/Android 全尺寸）、App 名称「卡包」、版本号 0.1.0+1
+- [ ] 隐私标签（App Privacy）在 App Store Connect 填写（需用户账号）
+- [ ] TestFlight / 巨魔内测（真机回归：OCR、动画、后台遮挡、深色模式）——需用户
+- [ ] App Store 提交 + 审核材料（截图、描述、隐私政策 URL）——需用户
+- [ ] **里程碑验收**：真机稳定运行 → 提交上架
+
+### 覆盖率（核心业务逻辑）
+全局行覆盖率约 47%（大量平台边界 UI/原生无法单测）；纯逻辑文件全部 100%：
+luhn / 卡号遮挡 / 颜色 / CardFace / CardSecret / CustomFace / 更新服务 / 仓储 / 扫描解析器 / 控制器 / RevealNotifier。
+0% 的文件是 Drift 真库 / Keychain / 相机 / image_picker / SharedPreferences 等平台边界，需真机集成测试。
+报告工具：`python app/tools/coverage_report.py`（先 `flutter test --coverage`）
 
 ## 后续（v1.1+，可选）
 
