@@ -1,0 +1,63 @@
+# Codemagic 云端 IPA 构建流水线
+#
+# 前提：本机无 Mac，iOS 打包必须在云端 macOS 构建。
+# 用法：
+#   1. 把本仓库推到 Git 远端（GitHub/Gitee/GitLab）
+#   2. 在 codemagic.io 绑定仓库，按 docs/BUILD.md 配置 Apple 签名凭据
+#   3. 手动触发或推 tag 触发本流水线
+#   4. 产物自动上传 TestFlight → iPhone 上 TestFlight 安装
+
+workflows:
+  ios-release:
+    name: iOS Release (TestFlight)
+    max_build_duration: 60
+    environment:
+      flutter: stable
+      xcode: latest
+      cocoapods: default
+      # 在 Codemagic UI 的 Environment variables 中配置：
+      #   APP_STORE_APP_ID      = App Store Connect 中的应用 ID（纯数字）
+      #   APP_STORE_CONNECT_KEY_IDENTIFIER / ISSUER_ID / PRIVATE_KEY = App Store Connect API Key
+      # 用于自动签名与上传 TestFlight。
+      vars:
+        APP_STORE_APP_ID: "REPLACE_WITH_APPLE_ID"
+        BUNDLE_ID: "com.kabao.kabao"
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: main
+          include: true
+    scripts:
+      - name: Set build version from tag
+        script: |
+          set -e
+          export BUILD_NUMBER=$(git rev-list --count HEAD)
+          echo "Build number: $BUILD_NUMBER"
+      - name: Flutter pub get
+        script: flutter pub get
+      - name: Analyze
+        script: flutter analyze
+      - name: Run tests
+        script: flutter test
+      - name: Build IPA (release)
+        script: |
+          flutter build ipa --release \
+            --build-name=1.0.0 \
+            --build-number=$BUILD_NUMBER \
+            --export-options-plist=/dev/null
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - build/ios/ipa/*.dSYM.zip
+    publishing:
+      app_store_connect:
+        api_key: $APP_STORE_CONNECT_PRIVATE_KEY
+        key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
+        issuer_id: $APP_STORE_CONNECT_ISSUER_ID
+        submit_to_testflight: true
+      email:
+        recipients:
+          - REPLACE_WITH_YOUR_EMAIL
+        notify:
+          success: true
+          failure: true

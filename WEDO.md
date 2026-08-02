@@ -81,3 +81,26 @@
 **下一步** → M3：相机 OCR 读卡（实时识别 + Luhn + 人工确认）；或先真机验收 M1/M2
 
 ---
+
+## 2026-08-03 · 验收 + iOS 打包准备
+
+**验收结果**
+- `flutter pub get`：正常
+- `flutter analyze`：**零问题**
+- 测试：**36 项全部通过**
+- 功能核对（对照 PRD）：
+  - M1 卡片增删改查（添加表单/编辑/删除确认/列表）✅
+  - M2 卡面系统（解析器/选择器/自定义编辑器/持久化）✅
+  - 敏感信息遮挡（卡号后四位展示）✅；Keychain 敏感字段存储 ✅
+
+**iOS 打包（无 Mac → 云端）**
+- **本机是 Windows，无法直接产出 .ipa**（需要 macOS/Xcode）
+- 已配置 **Codemagic 云端流水线** `codemagic.yaml`：push main → pub get → analyze → test → `flutter build ipa --release` → 上传 TestFlight
+- iOS 配置补充：显示名「卡包」、`NSCameraUsageDescription`（OCR 用）、`NSPhotoLibraryUsageDescription`（自定义卡面相册背景）
+- 打包发布完整指南见 **docs/BUILD.md**
+- 待用户操作：Apple Developer 账号 + App Store Connect API Key + 推远端仓库 + Codemagic 绑定
+
+**其他**
+- 保存记忆：项目约束 + 「每任务调用对应 skill」工作偏好
+
+---
