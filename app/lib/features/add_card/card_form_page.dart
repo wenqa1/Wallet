@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
@@ -9,7 +12,10 @@ import '../../core/utils/luhn.dart';
 import '../../data/local/app_database.dart';
 import '../../data/models/card_face.dart';
 import '../../data/models/card_secret.dart';
+import '../../data/models/custom_face.dart';
 import '../../shared/widgets/card_face_widget.dart';
+import '../card_face/card_face_picker_sheet.dart';
+import '../card_face/custom_face_editor_page.dart';
 
 const _uuid = Uuid();
 
@@ -40,6 +46,8 @@ class _CardFormPageState extends ConsumerState<CardFormPage> {
   Color _bankColor = const Color(0xFF607D8B);
   String? _cardId;
   bool _isEdit = false;
+  String? _faceId;
+  CustomFace? _customFace;
 
   @override
   void initState() {
@@ -57,6 +65,8 @@ class _CardFormPageState extends ConsumerState<CardFormPage> {
       _cardId = meta.id;
       _bankCode = meta.bankCode;
       _bankName = meta.bankName;
+      _faceId = meta.faceId;
+      _customFace = _parseCustomFace(meta.customFace);
       _nicknameController.text = meta.nickname ?? '';
       if (secret != null) {
         _numberController.text = formatCardNumber(secret.cardNumber);
@@ -69,6 +79,17 @@ class _CardFormPageState extends ConsumerState<CardFormPage> {
       }
       _type = CardType.values.asNameMap()[meta.cardType] ?? CardType.other;
     });
+  }
+
+  static CustomFace? _parseCustomFace(String? raw) {
+    if (raw == null || raw.isEmpty) return null;
+    try {
+      return CustomFace.fromJson(jsonDecode(raw) as Map<String, dynamic>);
+    } on FormatException {
+      return null;
+    } on TypeError {
+      return null;
+    }
   }
 
   @override
@@ -105,6 +126,10 @@ class _CardFormPageState extends ConsumerState<CardFormPage> {
       bankCode: _bankCode ?? 'OTHER',
       bankName: _bankName.isEmpty ? '其他银行' : _bankName,
       cardType: _type.name,
+      faceId: Value<String?>(_faceId),
+      customFace: _customFace == null
+          ? const Value(null)
+          : Value(jsonEncode(_customFace!.toJson())),
       nickname: _nicknameController.text.isEmpty
           ? const Value(null)
           : Value(_nicknameController.text.trim()),
@@ -125,9 +150,57 @@ class _CardFormPageState extends ConsumerState<CardFormPage> {
     if (mounted) Navigator.of(context).pop();
   }
 
+  CardFace _previewFace(List<CardFace>? faces) {
+    if (faces != null && _faceId != null) {
+      final hit = faces.firstWhereOrNull((f) => f.faceId == _faceId);
+      if (hit != null) return hit;
+    }
+    return CardFace.gradientFor(
+      bankCode: _bankCode ?? 'OTHER',
+      bankName: _bankName.isEmpty ? '其他银行' : _bankName,
+      color: _bankColor,
+    );
+  }
+
+  Future<void> _pickFace() async {
+    final faces = await ref.read(bundledFacesProvider.future);
+    if (!mounted) return;
+    final selected = await showCardFacePicker(
+      context,
+      faces: faces,
+      selectedFaceId: _faceId,
+    );
+    if (selected != null) {
+      setState(() {
+        _faceId = selected;
+        _customFace = null;
+      });
+    }
+  }
+
+  Future<void> _editCustomFace() async {
+    final result = await Navigator.push<CustomFace>(
+      context,
+      MaterialPageRoute(
+        builder: (_) => CardCustomFaceEditor(
+          initial: _customFace,
+          defaultBankName: _bankName,
+        ),
+      ),
+    );
+    if (result != null) {
+      setState(() {
+        _customFace = result;
+        _faceId = null;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final banksAsync = ref.watch(bankCatalogProvider);
+    final facesAsync = ref.watch(bundledFacesProvider);
+    final faces = facesAsync.valueOrNull;
     final numberText = _numberController.text;
 
     return Scaffold(
@@ -137,19 +210,18 @@ class _CardFormPageState extends ConsumerState<CardFormPage> {
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
-            if (_bankCode != null && numberText.isNotEmpty)
+            if (_bankCode != null)
               Padding(
                 padding: const EdgeInsets.only(bottom: 16),
                 child: CardFaceWidget(
-                  face: CardFace.gradientFor(
-                    bankCode: _bankCode!,
-                    bankName: _bankName,
-                    color: _bankColor,
-                  ),
+                  face: _previewFace(faces),
+                  customFace: _customFace,
                   nickname: _nicknameController.text.isEmpty
                       ? null
                       : _nicknameController.text,
-                  cardNumberMasked: maskCardNumber(numberText),
+                  cardNumberMasked: numberText.isEmpty
+                      ? null
+                      : maskCardNumber(numberText),
                 ),
               ),
             banksAsync.when(
@@ -189,6 +261,28 @@ class _CardFormPageState extends ConsumerState<CardFormPage> {
               onChanged: (value) {
                 if (value != null) setState(() => _type = value);
               },
+            ),
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton.icon(
+                    key: const Key('pick_face_button'),
+                    icon: const Icon(Icons.credit_card_outlined),
+                    label: const Text('选择卡面'),
+                    onPressed: _pickFace,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: OutlinedButton.icon(
+                    key: const Key('custom_face_button'),
+                    icon: const Icon(Icons.palette_outlined),
+                    label: const Text('自定义'),
+                    onPressed: _editCustomFace,
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 8),
             TextFormField(

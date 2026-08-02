@@ -34,10 +34,7 @@ void main() {
     await tester.tap(find.text('open'));
     await tester.pumpAndSettle();
 
-    await tester.enterText(
-      find.byKey(const Key('custom_logo_text')),
-      'MYBANK',
-    );
+    await tester.enterText(find.byKey(const Key('custom_logo_text')), 'MYBANK');
     await tester.enterText(
       find.byKey(const Key('custom_bank_name_text')),
       '我的银行',
