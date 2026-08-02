@@ -1,0 +1,242 @@
+{
+  "schemaVersion": 1,
+  "manifestVersion": 1,
+  "updatedAt": "2026-08-02T00:00:00Z",
+  "baseUrl": "",
+  "faces": [
+    {
+      "faceId": "grad-icbc-debit",
+      "bankCode": "ICBC",
+      "bankName": "中国工商银行",
+      "cardTypes": ["debit", "credit"],
+      "assetType": "gradient",
+      "fallback": {
+        "colors": ["#C7000B", "#8A0C0C"],
+        "logoText": "ICBC",
+        "foreground": "#FFFFFF"
+      },
+      "version": 1
+    },
+    {
+      "faceId": "grad-abc-debit",
+      "bankCode": "ABC",
+      "bankName": "中国农业银行",
+      "cardTypes": ["debit", "credit"],
+      "assetType": "gradient",
+      "fallback": {
+        "colors": ["#009B5C", "#00633C"],
+        "logoText": "ABC",
+        "foreground": "#FFFFFF"
+      },
+      "version": 1
+    },
+    {
+      "faceId": "grad-boc-debit",
+      "bankCode": "BOC",
+      "bankName": "中国银行",
+      "cardTypes": ["debit", "credit"],
+      "assetType": "gradient",
+      "fallback": {
+        "colors": ["#B30007", "#7D0005"],
+        "logoText": "BOC",
+        "foreground": "#FFFFFF"
+      },
+      "version": 1
+    },
+    {
+      "faceId": "grad-ccb-debit",
+      "bankCode": "CCB",
+      "bankName": "中国建设银行",
+      "cardTypes": ["debit", "credit"],
+      "assetType": "gradient",
+      "fallback": {
+        "colors": ["#003C71", "#00244A"],
+        "logoText": "CCB",
+        "foreground": "#FFFFFF"
+      },
+      "version": 1
+    },
+    {
+      "faceId": "grad-bcom-debit",
+      "bankCode": "BCOM",
+      "bankName": "交通银行",
+      "cardTypes": ["debit", "credit"],
+      "assetType": "gradient",
+      "fallback": {
+        "colors": ["#0E4D92", "#0A376B"],
+        "logoText": "BOCOM",
+        "foreground": "#FFFFFF"
+      },
+      "version": 1
+    },
+    {
+      "faceId": "grad-cmb-debit",
+      "bankCode": "CMB",
+      "bankName": "招商银行",
+      "cardTypes": ["debit", "credit"],
+      "assetType": "gradient",
+      "fallback": {
+        "colors": ["#C8102E", "#8C0B20"],
+        "logoText": "CMB",
+        "foreground": "#FFFFFF"
+      },
+      "version": 1
+    },
+    {
+      "faceId": "grad-psbc-debit",
+      "bankCode": "PSBC",
+      "bankName": "中国邮政储蓄银行",
+      "cardTypes": ["debit", "credit"],
+      "assetType": "gradient",
+      "fallback": {
+        "colors": ["#007A5E", "#00503D"],
+        "logoText": "PSBC",
+        "foreground": "#FFFFFF"
+      },
+      "version": 1
+    },
+    {
+      "faceId": "grad-spdb-debit",
+      "bankCode": "SPDB",
+      "bankName": "浦发银行",
+      "cardTypes": ["debit", "credit"],
+      "assetType": "gradient",
+      "fallback": {
+        "colors": ["#0066B3", "#00447B"],
+        "logoText": "SPDB",
+        "foreground": "#FFFFFF"
+      },
+      "version": 1
+    },
+    {
+      "faceId": "grad-citic-debit",
+      "bankCode": "CITIC",
+      "bankName": "中信银行",
+      "cardTypes": ["debit", "credit"],
+      "assetType": "gradient",
+      "fallback": {
+        "colors": ["#E60012", "#A5000D"],
+        "logoText": "CITIC",
+        "foreground": "#FFFFFF"
+      },
+      "version": 1
+    },
+    {
+      "faceId": "grad-cmbc-debit",
+      "bankCode": "CMBC",
+      "bankName": "民生银行",
+      "cardTypes": ["debit", "credit"],
+      "assetType": "gradient",
+      "fallback": {
+        "colors": ["#E4002B", "#A3001F"],
+        "logoText": "CMBC",
+        "foreground": "#FFFFFF"
+      },
+      "version": 1
+    },
+    {
+      "faceId": "grad-ceb-debit",
+      "bankCode": "CEB",
+      "bankName": "光大银行",
+      "cardTypes": ["debit", "credit"],
+      "assetType": "gradient",
+      "fallback": {
+        "colors": ["#8E1F5A", "#64153F"],
+        "logoText": "CEB",
+        "foreground": "#FFFFFF"
+      },
+      "version": 1
+    },
+    {
+      "faceId": "grad-cgb-debit",
+      "bankCode": "CGB",
+      "bankName": "广发银行",
+      "cardTypes": ["debit", "credit"],
+      "assetType": "gradient",
+      "fallback": {
+        "colors": ["#C21F31", "#8F1424"],
+        "logoText": "CGB",
+        "foreground": "#FFFFFF"
+      },
+      "version": 1
+    },
+    {
+      "faceId": "grad-pab-debit",
+      "bankCode": "PAB",
+      "bankName": "平安银行",
+      "cardTypes": ["debit", "credit"],
+      "assetType": "gradient",
+      "fallback": {
+        "colors": ["#E64A19", "#B0320F"],
+        "logoText": "PAB",
+        "foreground": "#FFFFFF"
+      },
+      "version": 1
+    },
+    {
+      "faceId": "grad-hxb-debit",
+      "bankCode": "HXB",
+      "bankName": "华夏银行",
+      "cardTypes": ["debit", "credit"],
+      "assetType": "gradient",
+      "fallback": {
+        "colors": ["#D12116", "#9A1810"],
+        "logoText": "HXB",
+        "foreground": "#FFFFFF"
+      },
+      "version": 1
+    },
+    {
+      "faceId": "grad-cib-debit",
+      "bankCode": "CIB",
+      "bankName": "兴业银行",
+      "cardTypes": ["debit", "credit"],
+      "assetType": "gradient",
+      "fallback": {
+        "colors": ["#003DA5", "#002B78"],
+        "logoText": "CIB",
+        "foreground": "#FFFFFF"
+      },
+      "version": 1
+    },
+    {
+      "faceId": "grad-generic-debit",
+      "bankCode": "OTHER",
+      "bankName": "其他银行",
+      "cardTypes": ["debit", "credit", "membership", "transport", "other"],
+      "assetType": "gradient",
+      "fallback": {
+        "colors": ["#607D8B", "#37474F"],
+        "logoText": "CARD",
+        "foreground": "#FFFFFF"
+      },
+      "version": 1
+    },
+    {
+      "faceId": "grad-member-gold",
+      "bankCode": "OTHER",
+      "bankName": "会员卡",
+      "cardTypes": ["membership"],
+      "assetType": "gradient",
+      "fallback": {
+        "colors": ["#C9A227", "#8F6F1B"],
+        "logoText": "MEMBER",
+        "foreground": "#FFFFFF"
+      },
+      "version": 1
+    },
+    {
+      "faceId": "grad-transit-blue",
+      "bankCode": "OTHER",
+      "bankName": "交通卡",
+      "cardTypes": ["transport"],
+      "assetType": "gradient",
+      "fallback": {
+        "colors": ["#1E88E5", "#1565C0"],
+        "logoText": "TRANSIT",
+        "foreground": "#FFFFFF"
+      },
+      "version": 1
+    }
+  ]
+}

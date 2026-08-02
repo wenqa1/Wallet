@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "banks": [
+    { "bankCode": "ICBC",  "bankName": "中国工商银行", "themeColor": "#C7000B" },
+    { "bankCode": "ABC",   "bankName": "中国农业银行", "themeColor": "#009B5C" },
+    { "bankCode": "BOC",   "bankName": "中国银行",     "themeColor": "#B30007" },
+    { "bankCode": "CCB",   "bankName": "中国建设银行", "themeColor": "#003C71" },
+    { "bankCode": "BCOM",  "bankName": "交通银行",     "themeColor": "#0E4D92" },
+    { "bankCode": "CMB",   "bankName": "招商银行",     "themeColor": "#C8102E" },
+    { "bankCode": "PSBC",  "bankName": "中国邮政储蓄银行", "themeColor": "#007A5E" },
+    { "bankCode": "SPDB",  "bankName": "浦发银行",     "themeColor": "#0066B3" },
+    { "bankCode": "CITIC", "bankName": "中信银行",     "themeColor": "#E60012" },
+    { "bankCode": "CMBC",  "bankName": "民生银行",     "themeColor": "#E4002B" },
+    { "bankCode": "CEB",   "bankName": "光大银行",     "themeColor": "#8E1F5A" },
+    { "bankCode": "CGB",   "bankName": "广发银行",     "themeColor": "#C21F31" },
+    { "bankCode": "PAB",   "bankName": "平安银行",     "themeColor": "#E64A19" },
+    { "bankCode": "HXB",   "bankName": "华夏银行",     "themeColor": "#D12116" },
+    { "bankCode": "CIB",   "bankName": "兴业银行",     "themeColor": "#003DA5" },
+    { "bankCode": "BOB",   "bankName": "北京银行",     "themeColor": "#E4002B" },
+    { "bankCode": "BOSC",  "bankName": "上海银行",     "themeColor": "#005BAC" },
+    { "bankCode": "BONB",  "bankName": "宁波银行",     "themeColor": "#0067B1" },
+    { "bankCode": "OTHER", "bankName": "其他银行",     "themeColor": "#607D8B" }
+  ]
+}
