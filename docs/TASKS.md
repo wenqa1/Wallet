@@ -64,10 +64,14 @@
 
 ## M5 · 卡面资源站（0.5 周）
 
-- [ ] 搭建静态资源站（GitHub Pages / Cloudflare Pages）
-- [ ] 生成 manifest.json + 首批卡面图片（通用化配色 + 银行名文字）
-- [ ] CI 发布脚本（推 manifest 即更新）
-- [ ] **里程碑验收**：修改资源站 → App 手动检查更新拉取成功
+- [x] 搭建静态资源站（GitHub Pages，`.github/workflows/pages.yml` 自动部署 `site/`）
+- [x] 生成 manifest.json + 19 张卡面图片（`tools/generate_card_faces.py`，通用化配色 + 银行名文字）
+- [x] CI 发布脚本（push `site/` 即触发 Pages 部署）
+- [ ] **里程碑验收**：修改资源站 → App 手动检查更新拉取成功（需：仓库 Settings→Pages→Source 选 GitHub Actions；Codemagic 出包装真机后验证）
+
+### 更新资源站步骤
+1. `python tools/generate_card_faces.py`（重新生成 site/）
+2. push 到 main → GitHub Actions 自动部署 Pages → App 设置页「检查卡面更新」拉取
 
 ## M6 · 测试打磨 + 上架（1 周）
 

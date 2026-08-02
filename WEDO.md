@@ -179,3 +179,25 @@
 **下一步** → M5：卡面静态资源站搭建（manifest + 图片 + CI 发布）或真机验收
 
 ---
+
+## 2026-08-03 03:50 · M5 卡面资源站
+
+**做了什么**
+- **5A（App 端）**：远程卡面图片渲染 —— `CardFaceStore.imagePath`（本地缓存文件）、`remoteFacePathProvider`；`CardFaceWidget` 三级渲染：**本地图片 > 在线兜底(Image.network) > 渐变**；轮播远程卡面接本地图片
+- **5B（资源站）**：`tools/generate_card_faces.py`（PIL）生成 **19 张通用渐变卡面 PNG**（银行主题色 + 行名文字）+ `site/manifest.json`（manifestVersion 2，baseUrl 指向 GitHub Pages）；`.github/workflows/pages.yml` push `site/` 自动部署 Pages
+- **5C（接入）**：App 资源站地址默认 `https://wenqa1.github.io/Wallet/manifest.json`（可 --dart-define 覆盖）
+
+**验证结果**
+- `flutter analyze`：零问题
+- **73 个测试全部通过**（新增：远程卡面图片渲染 1 + 生成的 manifest 可解析 1）
+- 生成的 site/manifest.json 能被 `RemoteFaceManifest` 正确解析（测试覆盖）
+
+**待用户操作**
+1. 仓库 Settings → Pages → Source 选 **GitHub Actions**
+2. 推送后 Pages 部署生效；Codemagic 出包装真机 → 设置页「检查卡面更新」→ 远程卡面下载并显示
+
+**提交**：5A(2) + 5B/5C(1)
+
+**下一步** → M6：图标/上架材料 + TestFlight/巨魔安装全流程验收
+
+---
