@@ -20,6 +20,7 @@ workflows:
       flutter: stable
       xcode: latest
       cocoapods: default
+      working_directory: app
     triggering:
       events:
         - push
@@ -59,8 +60,8 @@ workflows:
       flutter: stable
       xcode: latest
       cocoapods: default
+      working_directory: app
       # 在 Codemagic UI 的 Environment variables 中配置：
-      #   APP_STORE_APP_ID = App Store Connect 应用 ID（纯数字）
       #   APP_STORE_CONNECT_KEY_IDENTIFIER / ISSUER_ID / PRIVATE_KEY = App Store Connect API Key
       vars:
         BUNDLE_ID: "com.kabao.kabao"
