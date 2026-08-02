@@ -63,7 +63,6 @@ workflows:
       #   APP_STORE_APP_ID = App Store Connect 应用 ID（纯数字）
       #   APP_STORE_CONNECT_KEY_IDENTIFIER / ISSUER_ID / PRIVATE_KEY = App Store Connect API Key
       vars:
-        APP_STORE_APP_ID: "REPLACE_WITH_APPLE_ID"
         BUNDLE_ID: "com.kabao.kabao"
     triggering:
       events:
@@ -92,9 +91,10 @@ workflows:
         key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
         issuer_id: $APP_STORE_CONNECT_ISSUER_ID
         submit_to_testflight: true
-      email:
-        recipients:
-          - REPLACE_WITH_YOUR_EMAIL
-        notify:
-          success: true
-          failure: true
+      # 如需构建结果邮件通知，取消注释并填入你的邮箱：
+      # email:
+      #   recipients:
+      #     - you@example.com
+      #   notify:
+      #     success: true
+      #     failure: true
