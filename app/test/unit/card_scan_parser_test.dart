@@ -39,10 +39,7 @@ void main() {
     });
 
     test('提取卡号附近的有效期 MM/YY', () {
-      final result = parser.parse(const [
-        '4111 1111 1111 1111',
-        '08/29',
-      ]);
+      final result = parser.parse(const ['4111 1111 1111 1111', '08/29']);
       expect(result.first.expiry, '08/29');
     });
 

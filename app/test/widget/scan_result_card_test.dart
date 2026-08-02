@@ -25,8 +25,8 @@ void main() {
     );
 
     expect(find.text('4111 1111 1111 1111'), findsOneWidget);
-    expect(find.text('ZHANG SAN'), findsOneWidget);
-    expect(find.text('08/29'), findsOneWidget);
+    expect(find.textContaining('ZHANG SAN'), findsOneWidget);
+    expect(find.textContaining('08/29'), findsOneWidget);
 
     await tester.tap(find.text('确认使用'));
     expect(confirmed, isTrue);

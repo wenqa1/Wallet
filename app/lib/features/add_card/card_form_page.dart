@@ -16,6 +16,8 @@ import '../../data/models/custom_face.dart';
 import '../../shared/widgets/card_face_widget.dart';
 import '../card_face/card_face_picker_sheet.dart';
 import '../card_face/custom_face_editor_page.dart';
+import '../scan/card_scan_page.dart';
+import '../scan/card_scan_parser.dart';
 
 const _uuid = Uuid();
 
@@ -196,6 +198,24 @@ class _CardFormPageState extends ConsumerState<CardFormPage> {
     }
   }
 
+  Future<void> _scanCard() async {
+    final candidate = await Navigator.push<CardScanCandidate>(
+      context,
+      MaterialPageRoute(builder: (_) => const CardScanPage()),
+    );
+    if (candidate == null) return;
+    if (!mounted) return;
+    setState(() {
+      _numberController.text = formatCardNumber(candidate.cardNumber);
+      if (candidate.holderName != null) {
+        _holderController.text = candidate.holderName!;
+      }
+      if (candidate.expiry != null) {
+        _expiryController.text = candidate.expiry!;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final banksAsync = ref.watch(bankCatalogProvider);
@@ -296,9 +316,15 @@ class _CardFormPageState extends ConsumerState<CardFormPage> {
               key: const Key('card_number'),
               controller: _numberController,
               keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: '卡号',
                 hintText: '6225 8820 0000 1234',
+                suffixIcon: IconButton(
+                  key: const Key('scan_button'),
+                  icon: const Icon(Icons.camera_alt_outlined),
+                  tooltip: '相机扫描卡号',
+                  onPressed: _scanCard,
+                ),
               ),
               validator: (value) {
                 final digits = (value ?? '').replaceAll(RegExp(r'\D'), '');

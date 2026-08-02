@@ -59,6 +59,11 @@ void main() {
     expect(secret.expiry, '08/29');
   });
 
+  testWidgets('表单包含相机扫描入口', (tester) async {
+    await pumpForm(tester);
+    expect(find.byKey(const Key('scan_button')), findsOneWidget);
+  });
+
   testWidgets('无效卡号被拦截并提示，不写入', (tester) async {
     await pumpForm(tester);
 
