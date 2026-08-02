@@ -16,11 +16,11 @@ workflows:
   ios-trollstore:
     name: iOS TrollStore (unsigned IPA)
     max_build_duration: 45
+    working_directory: app
     environment:
       flutter: stable
       xcode: latest
       cocoapods: default
-      working_directory: app
     triggering:
       events:
         - push
@@ -54,11 +54,11 @@ workflows:
   ios-release:
     name: iOS Release (TestFlight)
     max_build_duration: 60
+    working_directory: app
     environment:
       flutter: stable
       xcode: latest
       cocoapods: default
-      working_directory: app
       # 在 Codemagic UI 的 Environment variables 中配置：
       #   APP_STORE_CONNECT_KEY_IDENTIFIER / ISSUER_ID / PRIVATE_KEY = App Store Connect API Key
       vars:
