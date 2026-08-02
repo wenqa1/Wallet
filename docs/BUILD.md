@@ -31,8 +31,9 @@ git push -u origin main
 
 1. 打开 [codemagic.io](https://codemagic.io) → 登录（免费）→ **Add application** → 选你的仓库。
 2. 仓库根目录已有 [codemagic.yaml](../codemagic.yaml)，其中 `ios-trollstore` 工作流会：
-   - `pub get` → `flutter analyze` → `flutter test` → `flutter build ipa --release --no-codesign`
-   - 产出 **无签名 IPA**，不碰任何 Apple 凭据。
+   - `pub get` → `flutter analyze` → `flutter test` → `flutter build ios --release --no-codesign`
+   - 再把 `Runner.app` 打包成 **无签名 IPA**（`flutter build ipa --no-codesign` 会跳过 IPA 生成，故手动打包）
+   - 不碰任何 Apple 凭据。
 3. 推送 `main` 自动触发；也可在页面手动 **Start new build**（选 `ios-trollstore`）。
 
 ### 3. 拿到 IPA 并装到手机

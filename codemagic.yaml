@@ -34,21 +34,19 @@ workflows:
         script: flutter analyze
       - name: Run tests
         script: flutter test
-      - name: Build unsigned IPA
+      # flutter build ipa --no-codesign 会跳过 IPA 生成（只出归档），
+      # 所以用 flutter build ios 直接产出 Runner.app，再手动打包成 IPA。
+      - name: Build unsigned Runner.app
         script: |
-          flutter build ipa --release --no-codesign \
-            --build-name=1.0.0 \
-            --build-number=$(git rev-list --count HEAD)
-      # 兜底：若 ipa 未生成，把 Runner.app 手动打包为 IPA
-      - name: Package IPA manually (fallback)
+          flutter build ios --release --no-codesign
+      - name: Package IPA for TrollStore
         script: |
-          if ! ls build/ios/ipa/*.ipa >/dev/null 2>&1 && [ -d build/ios/iphoneos/Runner.app ]; then
-            mkdir -p Payload
-            cp -R build/ios/iphoneos/Runner.app Payload/
-            ditto -c -k --keepParent Payload Runner.ipa
-          fi
+          set -e
+          mkdir -p Payload
+          cp -R build/ios/iphoneos/Runner.app Payload/
+          ditto -c -k --keepParent Payload Runner.ipa
+          ls -lh Runner.ipa
     artifacts:
-      - build/ios/ipa/*.ipa
       - Runner.ipa
       - build/ios/iphoneos/Runner.app
 

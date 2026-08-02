@@ -114,3 +114,19 @@
 - 下一步：用户到 Codemagic 免费绑定仓库 → 触发 `ios-trollstore` 构建 → 巨魔商店装无签名 IPA
 
 ---
+
+## 2026-08-03 · 云端构建排障 + 主动修复
+
+**用户反馈的 Codemagic 错误**
+1. `codemagic.yaml` 校验失败（email recipients 非法）→ 移除占位邮箱块
+2. "Expected to find project root in current working directory" → Flutter 工程在 `app/` 子目录，两个工作流加 `working_directory: app`
+
+**主动排查并修复的隐患**
+1. **`flutter build ipa --no-codesign` 会跳过 IPA 生成**（查 Flutter SDK 源码确认，只出归档）→ 改用 `flutter build ios --release --no-codesign` 产 `Runner.app`，再用 `ditto` 打包 `Runner.ipa`
+2. **部署目标 13.0 不满足插件要求**：`google_mlkit_text_recognition` 要求 iOS 15.5+ → 把 `IPHONEOS_DEPLOYMENT_TARGET` 提到 **16.0**（符合 PRD 最低 iOS 16）
+3. `flutter build ios` 不支持 `--build-name/--build-number`（源码确认）→ 去掉，版本走 pubspec
+4. 相机/相册权限描述已加（Info.plist）
+
+**待用户**：Codemagic 重新触发 `ios-trollstore` 构建
+
+---
