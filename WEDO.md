@@ -106,3 +106,11 @@
 - 保存记忆：项目约束 + 「每任务调用对应 skill」工作偏好
 
 ---
+
+## 2026-08-03 · 推送到 GitHub
+
+- 远端：`https://github.com/wenqa1/Wallet.git`（origin/main）
+- 13 个提交全部推送成功，工作区干净，远端 HEAD = 本地 `4e04963`
+- 下一步：用户到 Codemagic 免费绑定仓库 → 触发 `ios-trollstore` 构建 → 巨魔商店装无签名 IPA
+
+---
