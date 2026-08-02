@@ -62,7 +62,7 @@ void main() {
 
       expect(r.custom, isNotNull);
       expect(r.custom!.colors, custom.colors);
-      expect(r.face!.faceId, 'cmb-x');
+      expect(r.face.faceId, 'cmb-x');
     });
 
     test('faceId 命中内置卡面', () {
@@ -71,7 +71,7 @@ void main() {
         bundledFaces: faces,
         banks: banks,
       );
-      expect(r.face!.faceId, 'cmb-x');
+      expect(r.face.faceId, 'cmb-x');
     });
 
     test('未知 faceId 回退到银行默认卡面', () {
@@ -80,7 +80,7 @@ void main() {
         bundledFaces: faces,
         banks: banks,
       );
-      expect(r.face!.faceId, 'cmb-x');
+      expect(r.face.faceId, 'cmb-x');
     });
 
     test('未知银行合成渐变卡面兜底', () {
@@ -89,8 +89,8 @@ void main() {
         bundledFaces: faces,
         banks: banks,
       );
-      expect(r.face!.assetType, 'gradient');
-      expect(r.face!.bankCode, 'UNKNOWN');
+      expect(r.face.assetType, 'gradient');
+      expect(r.face.bankCode, 'UNKNOWN');
     });
 
     test('损坏的 customFace JSON 不崩溃', () {

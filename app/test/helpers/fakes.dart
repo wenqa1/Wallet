@@ -3,12 +3,36 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kabao/app/providers.dart';
 import 'package:kabao/core/constants/bank_catalog.dart';
 import 'package:kabao/data/local/app_database.dart';
+import 'package:kabao/data/models/card_face.dart';
 import 'package:kabao/data/models/card_secret.dart';
 import 'package:kabao/data/repositories/card_repository.dart';
 
 const testBanks = [
   Bank(bankCode: 'CMB', bankName: '招商银行', themeColor: Color(0xFFC8102E)),
   Bank(bankCode: 'CCB', bankName: '中国建设银行', themeColor: Color(0xFF003C71)),
+];
+
+const testFaces = [
+  CardFace(
+    faceId: 'cmb-test',
+    bankCode: 'CMB',
+    bankName: '招商银行',
+    cardTypes: ['debit', 'credit'],
+    assetType: 'gradient',
+    version: 1,
+    colors: [Color(0xFFC8102E), Color(0xFF8C0B20)],
+    logoText: 'CMB',
+  ),
+  CardFace(
+    faceId: 'ccb-test',
+    bankCode: 'CCB',
+    bankName: '中国建设银行',
+    cardTypes: ['debit', 'credit'],
+    assetType: 'gradient',
+    version: 1,
+    colors: [Color(0xFF003C71), Color(0xFF00244A)],
+    logoText: 'CCB',
+  ),
 ];
 
 /// 内存版卡片仓储，widget 测试用（纯 microtask，无真实 I/O）。
@@ -76,6 +100,7 @@ class TestHarness {
       overrides: [
         cardRepositoryProvider.overrideWithValue(repo),
         bankCatalogProvider.overrideWith((ref) async => testBanks),
+        bundledFacesProvider.overrideWith((ref) async => testFaces),
       ],
       child: child,
     );

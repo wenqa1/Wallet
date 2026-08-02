@@ -1,10 +1,10 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../app/providers.dart';
 import '../../core/constants/bank_catalog.dart';
+import '../../core/face/card_face_resolver.dart';
 import '../../data/local/app_database.dart';
 import '../../data/models/card_face.dart';
 import '../../shared/widgets/card_tile.dart';
@@ -22,6 +22,7 @@ class CardListPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final cardsAsync = ref.watch(cardListProvider);
     final banksAsync = ref.watch(bankCatalogProvider);
+    final facesAsync = ref.watch(bundledFacesProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text('卡包')),
@@ -32,9 +33,13 @@ class CardListPage extends ConsumerWidget {
       ),
       body: cardsAsync.when(
         data: (cards) => banksAsync.when(
-          data: (banks) => cards.isEmpty
-              ? const _EmptyState()
-              : _CardGrid(cards: cards, banks: banks),
+          data: (banks) => facesAsync.when(
+            data: (faces) => cards.isEmpty
+                ? const _EmptyState()
+                : _CardGrid(cards: cards, banks: banks, faces: faces),
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (error, _) => Center(child: Text('卡面库加载失败：$error')),
+          ),
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (error, _) => Center(child: Text('银行列表加载失败：$error')),
         ),
@@ -46,26 +51,17 @@ class CardListPage extends ConsumerWidget {
 }
 
 class _CardGrid extends ConsumerWidget {
-  const _CardGrid({required this.cards, required this.banks});
+  const _CardGrid({
+    required this.cards,
+    required this.banks,
+    required this.faces,
+  });
 
   final List<CardMetaData> cards;
   final List<Bank> banks;
+  final List<CardFace> faces;
 
-  CardFace _faceFor(CardMetaData card) {
-    final bank = banks.firstWhereOrNull((b) => b.bankCode == card.bankCode);
-    if (bank == null) {
-      return CardFace.gradientFor(
-        bankCode: card.bankCode,
-        bankName: card.bankName,
-        color: const Color(0xFF607D8B),
-      );
-    }
-    return CardFace.gradientFor(
-      bankCode: bank.bankCode,
-      bankName: bank.bankName,
-      color: bank.themeColor,
-    );
-  }
+  static const _resolver = CardFaceResolver();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -84,7 +80,14 @@ class _CardGrid extends ConsumerWidget {
           key: Key('card_${card.id}'),
           borderRadius: BorderRadius.circular(16),
           onTap: () => _showActions(context, ref, card),
-          child: CardTile(card: card, face: _faceFor(card)),
+          child: CardTile(
+            card: card,
+            resolution: _resolver.resolve(
+              card: card,
+              bundledFaces: faces,
+              banks: banks,
+            ),
+          ),
         );
       },
     );

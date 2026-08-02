@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart' show Colors;
 
+import '../../core/utils/color_utils.dart';
+
 /// 卡面资源模型。
 ///
 /// assetType:
@@ -69,19 +71,12 @@ class CardFace {
       assetType: json['assetType'] as String? ?? 'gradient',
       imageUrl: json['imageUrl'] as String?,
       assetKey: json['assetKey'] as String?,
-      colors: [for (final c in colorStrings) _parseHexColor(c)],
+      colors: [for (final c in colorStrings) hexToColor(c)],
       logoText: fallback['logoText'] as String?,
       foreground: fallback['foreground'] != null
-          ? _parseHexColor(fallback['foreground'] as String)
+          ? hexToColor(fallback['foreground'] as String)
           : null,
       version: json['version'] as int? ?? 1,
     );
-  }
-
-  static Color _parseHexColor(String hex) {
-    final cleaned = hex.replaceFirst('#', '');
-    final value = int.tryParse(cleaned, radix: 16);
-    if (value == null) return const Color(0xFF607D8B);
-    return Color(0xFF000000 | value);
   }
 }
