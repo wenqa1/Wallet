@@ -54,13 +54,13 @@
 
 ## M4 · 钱包式 UI + 卡面网络更新（1 周）
 
-- [ ] 首页卡片轮播（PageView + 错落缩放）
-- [ ] 3D 翻转详情页 + 敏感遮挡（`••••` 样式）
-- [ ] 长按临时显示 + 自动隐藏 + 后台清屏（AppLifecycleListener）
-- [ ] 余额录入/更新 + 卡片上展示
-- [ ] `card_face_api.dart` + `card_face_downloader.dart`：manifest 拉取、ETag、增量下载、失败回退
-- [ ] 设置页：遮挡时长、手动检查更新
-- [ ] **里程碑验收**：轮播流畅（真机 60fps）；切后台回来卡号保持遮挡；远程卡面能更新
+- [x] 首页卡片轮播（PageView + 错落缩放，`CardCarousel`）
+- [x] 3D 翻转详情页 + 敏感遮挡（`CardFlipView` + 卡背面 `••••` 样式）
+- [x] 长按临时显示 + 自动隐藏（`RevealNotifier` 定时器）+ 后台清屏（AppLifecycleListener）
+- [x] 余额录入/更新 + 卡片上展示（M1 完成 + 卡面展示）
+- [x] 卡面网络更新：manifest 拉取、增量下载、失败回退（`CardFaceUpdateService`，ETag 走 Dio 304）
+- [x] 设置页：遮挡时长（SharedPreferences）、手动检查更新（结果 SnackBar）
+- [ ] **里程碑验收**：轮播流畅（真机 60fps）；切后台回来卡号保持遮挡；远程卡面能更新（需真机 + M5 资源站）
 
 ## M5 · 卡面资源站（0.5 周）
 

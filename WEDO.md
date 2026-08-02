@@ -149,3 +149,33 @@
 **下一步** → M4：钱包式轮播 UI + 卡面网络增量更新（manifest 协议 + 下载）
 
 ---
+
+## 2026-08-03 03:20 · M4 钱包式 UI + 卡面网络更新
+
+**做了什么**（4A 数据层 → 4B 设置页 → 4C UI，TDD 分步提交）
+- **4A 卡面网络更新**
+  - `RemoteFaceManifest` 解析（schema/manifestVersion/baseUrl/faces）
+  - `CardFaceUpdateService`（接口）+ `NetworkCardFaceUpdateService`：版本比较、远程卡面图片增量下载、同版本跳过、失败静默回退；Dio 304/ETag
+  - `DriftCardFaceStore`：清单/版本存 `CardFaceCache` 表，图片存应用支持目录；`allFacesProvider` = 内置 + 远程
+- **4B 设置页**
+  - `SettingsStore` + SharedPreferences：遮挡时长持久化（3/5/10/15s）
+  - `SettingsPage`：遮挡时长切换、已缓存远程卡面数、手动检查更新（SnackBar 结果）
+- **4C 钱包式 UI**
+  - `CardCarousel`：PageView + 错落缩放轮播
+  - `CardFlipView`：3D 翻转（Matrix4 rotateY + 透视），正面卡面 / 背面详情（持卡人/有效期/CVV/余额/编辑删除）
+  - `RevealNotifier`：长按卡号临时显示 → 到时自动隐藏（定时器、可重置）；`KabaoApp` 后台清屏（inactive/paused 强制隐藏，防窥探）
+  - 首页网格 → 轮播；删除改翻转到背面操作
+
+**验证结果**
+- `flutter analyze`：零问题
+- **71 个测试全部通过**（新增 14：manifest 2 + 更新服务 4 + 设置 2 + reveal 3 + 卡背面 2 + 翻转 1 + 轮播 1）
+
+**待办**
+- 远程卡面图片的 `CardFaceWidget` 渲染（本地文件路径）留待 M5 资源站落地后接
+- 里程碑验收需真机
+
+**提交**：4A(2) + 4A接入(1) + 4B(1) + 4C(3)
+
+**下一步** → M5：卡面静态资源站搭建（manifest + 图片 + CI 发布）或真机验收
+
+---
