@@ -48,10 +48,10 @@ final bundledFacesProvider = FutureProvider<List<CardFace>>((ref) {
   return ref.watch(cardFaceRepositoryProvider).loadBundledFaces();
 });
 
-/// 卡面资源站地址（M5 搭建后配置），可用 `--dart-define=CARD_FACE_MANIFEST_URL=...` 覆盖。
+/// 卡面资源站地址（GitHub Pages），可用 `--dart-define=CARD_FACE_MANIFEST_URL=...` 覆盖。
 const cardFaceManifestUrl = String.fromEnvironment(
   'CARD_FACE_MANIFEST_URL',
-  defaultValue: 'https://example.com/card_faces/manifest.json',
+  defaultValue: 'https://wenqa1.github.io/Wallet/manifest.json',
 );
 
 final cardFaceStoreProvider = Provider<CardFaceStore>((ref) {

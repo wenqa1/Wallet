@@ -1,5 +1,6 @@
 # 本地工具（Flutter SDK，体积大，不入库）
 /tools/
+!/tools/generate_card_faces.py
 
 # Flutter/Dart 构建产物（app/ 内已有 .gitignore，此处兜底）
 app/build/

@@ -1,0 +1,388 @@
+{
+  "schemaVersion": 1,
+  "manifestVersion": 2,
+  "updatedAt": "2026-08-03T00:00:00Z",
+  "baseUrl": "https://wenqa1.github.io/Wallet/card_faces/",
+  "faces": [
+    {
+      "faceId": "remote-icbc-debit",
+      "bankCode": "ICBC",
+      "bankName": "中国工商银行",
+      "cardTypes": [
+        "debit",
+        "credit"
+      ],
+      "assetType": "remote",
+      "imageUrl": "icbc-debit.png",
+      "fallback": {
+        "colors": [
+          "#C7000B",
+          "#810007"
+        ],
+        "logoText": "ICBC",
+        "foreground": "#FFFFFF"
+      },
+      "version": 1
+    },
+    {
+      "faceId": "remote-abc-debit",
+      "bankCode": "ABC",
+      "bankName": "中国农业银行",
+      "cardTypes": [
+        "debit",
+        "credit"
+      ],
+      "assetType": "remote",
+      "imageUrl": "abc-debit.png",
+      "fallback": {
+        "colors": [
+          "#009B5C",
+          "#00643b"
+        ],
+        "logoText": "ABC",
+        "foreground": "#FFFFFF"
+      },
+      "version": 1
+    },
+    {
+      "faceId": "remote-boc-debit",
+      "bankCode": "BOC",
+      "bankName": "中国银行",
+      "cardTypes": [
+        "debit",
+        "credit"
+      ],
+      "assetType": "remote",
+      "imageUrl": "boc-debit.png",
+      "fallback": {
+        "colors": [
+          "#B30007",
+          "#740004"
+        ],
+        "logoText": "BOC",
+        "foreground": "#FFFFFF"
+      },
+      "version": 1
+    },
+    {
+      "faceId": "remote-ccb-debit",
+      "bankCode": "CCB",
+      "bankName": "中国建设银行",
+      "cardTypes": [
+        "debit",
+        "credit"
+      ],
+      "assetType": "remote",
+      "imageUrl": "ccb-debit.png",
+      "fallback": {
+        "colors": [
+          "#003C71",
+          "#002749"
+        ],
+        "logoText": "CCB",
+        "foreground": "#FFFFFF"
+      },
+      "version": 1
+    },
+    {
+      "faceId": "remote-bcom-debit",
+      "bankCode": "BCOM",
+      "bankName": "交通银行",
+      "cardTypes": [
+        "debit",
+        "credit"
+      ],
+      "assetType": "remote",
+      "imageUrl": "bcom-debit.png",
+      "fallback": {
+        "colors": [
+          "#0E4D92",
+          "#09325e"
+        ],
+        "logoText": "BCOM",
+        "foreground": "#FFFFFF"
+      },
+      "version": 1
+    },
+    {
+      "faceId": "remote-cmb-debit",
+      "bankCode": "CMB",
+      "bankName": "招商银行",
+      "cardTypes": [
+        "debit",
+        "credit"
+      ],
+      "assetType": "remote",
+      "imageUrl": "cmb-debit.png",
+      "fallback": {
+        "colors": [
+          "#C8102E",
+          "#820a1d"
+        ],
+        "logoText": "CMB",
+        "foreground": "#FFFFFF"
+      },
+      "version": 1
+    },
+    {
+      "faceId": "remote-psbc-debit",
+      "bankCode": "PSBC",
+      "bankName": "中国邮政储蓄银行",
+      "cardTypes": [
+        "debit",
+        "credit"
+      ],
+      "assetType": "remote",
+      "imageUrl": "psbc-debit.png",
+      "fallback": {
+        "colors": [
+          "#007A5E",
+          "#004f3d"
+        ],
+        "logoText": "PSBC",
+        "foreground": "#FFFFFF"
+      },
+      "version": 1
+    },
+    {
+      "faceId": "remote-spdb-debit",
+      "bankCode": "SPDB",
+      "bankName": "浦发银行",
+      "cardTypes": [
+        "debit",
+        "credit"
+      ],
+      "assetType": "remote",
+      "imageUrl": "spdb-debit.png",
+      "fallback": {
+        "colors": [
+          "#0066B3",
+          "#004274"
+        ],
+        "logoText": "SPDB",
+        "foreground": "#FFFFFF"
+      },
+      "version": 1
+    },
+    {
+      "faceId": "remote-citic-debit",
+      "bankCode": "CITIC",
+      "bankName": "中信银行",
+      "cardTypes": [
+        "debit",
+        "credit"
+      ],
+      "assetType": "remote",
+      "imageUrl": "citic-debit.png",
+      "fallback": {
+        "colors": [
+          "#E60012",
+          "#95000b"
+        ],
+        "logoText": "CITIC",
+        "foreground": "#FFFFFF"
+      },
+      "version": 1
+    },
+    {
+      "faceId": "remote-cmbc-debit",
+      "bankCode": "CMBC",
+      "bankName": "民生银行",
+      "cardTypes": [
+        "debit",
+        "credit"
+      ],
+      "assetType": "remote",
+      "imageUrl": "cmbc-debit.png",
+      "fallback": {
+        "colors": [
+          "#E4002B",
+          "#94001b"
+        ],
+        "logoText": "CMBC",
+        "foreground": "#FFFFFF"
+      },
+      "version": 1
+    },
+    {
+      "faceId": "remote-ceb-debit",
+      "bankCode": "CEB",
+      "bankName": "光大银行",
+      "cardTypes": [
+        "debit",
+        "credit"
+      ],
+      "assetType": "remote",
+      "imageUrl": "ceb-debit.png",
+      "fallback": {
+        "colors": [
+          "#8E1F5A",
+          "#5c143a"
+        ],
+        "logoText": "CEB",
+        "foreground": "#FFFFFF"
+      },
+      "version": 1
+    },
+    {
+      "faceId": "remote-cgb-debit",
+      "bankCode": "CGB",
+      "bankName": "广发银行",
+      "cardTypes": [
+        "debit",
+        "credit"
+      ],
+      "assetType": "remote",
+      "imageUrl": "cgb-debit.png",
+      "fallback": {
+        "colors": [
+          "#C21F31",
+          "#7e141f"
+        ],
+        "logoText": "CGB",
+        "foreground": "#FFFFFF"
+      },
+      "version": 1
+    },
+    {
+      "faceId": "remote-pab-debit",
+      "bankCode": "PAB",
+      "bankName": "平安银行",
+      "cardTypes": [
+        "debit",
+        "credit"
+      ],
+      "assetType": "remote",
+      "imageUrl": "pab-debit.png",
+      "fallback": {
+        "colors": [
+          "#E64A19",
+          "#953010"
+        ],
+        "logoText": "PAB",
+        "foreground": "#FFFFFF"
+      },
+      "version": 1
+    },
+    {
+      "faceId": "remote-hxb-debit",
+      "bankCode": "HXB",
+      "bankName": "华夏银行",
+      "cardTypes": [
+        "debit",
+        "credit"
+      ],
+      "assetType": "remote",
+      "imageUrl": "hxb-debit.png",
+      "fallback": {
+        "colors": [
+          "#D12116",
+          "#87150e"
+        ],
+        "logoText": "HXB",
+        "foreground": "#FFFFFF"
+      },
+      "version": 1
+    },
+    {
+      "faceId": "remote-cib-debit",
+      "bankCode": "CIB",
+      "bankName": "兴业银行",
+      "cardTypes": [
+        "debit",
+        "credit"
+      ],
+      "assetType": "remote",
+      "imageUrl": "cib-debit.png",
+      "fallback": {
+        "colors": [
+          "#003DA5",
+          "#00276b"
+        ],
+        "logoText": "CIB",
+        "foreground": "#FFFFFF"
+      },
+      "version": 1
+    },
+    {
+      "faceId": "remote-bob-debit",
+      "bankCode": "BOB",
+      "bankName": "北京银行",
+      "cardTypes": [
+        "debit",
+        "credit"
+      ],
+      "assetType": "remote",
+      "imageUrl": "bob-debit.png",
+      "fallback": {
+        "colors": [
+          "#E4002B",
+          "#94001b"
+        ],
+        "logoText": "BOB",
+        "foreground": "#FFFFFF"
+      },
+      "version": 1
+    },
+    {
+      "faceId": "remote-bosc-debit",
+      "bankCode": "BOSC",
+      "bankName": "上海银行",
+      "cardTypes": [
+        "debit",
+        "credit"
+      ],
+      "assetType": "remote",
+      "imageUrl": "bosc-debit.png",
+      "fallback": {
+        "colors": [
+          "#005BAC",
+          "#003b6f"
+        ],
+        "logoText": "BOSC",
+        "foreground": "#FFFFFF"
+      },
+      "version": 1
+    },
+    {
+      "faceId": "remote-bonb-debit",
+      "bankCode": "BONB",
+      "bankName": "宁波银行",
+      "cardTypes": [
+        "debit",
+        "credit"
+      ],
+      "assetType": "remote",
+      "imageUrl": "bonb-debit.png",
+      "fallback": {
+        "colors": [
+          "#0067B1",
+          "#004273"
+        ],
+        "logoText": "BONB",
+        "foreground": "#FFFFFF"
+      },
+      "version": 1
+    },
+    {
+      "faceId": "remote-other-debit",
+      "bankCode": "OTHER",
+      "bankName": "其他银行",
+      "cardTypes": [
+        "debit",
+        "credit"
+      ],
+      "assetType": "remote",
+      "imageUrl": "other-debit.png",
+      "fallback": {
+        "colors": [
+          "#607D8B",
+          "#3e515a"
+        ],
+        "logoText": "OTHER",
+        "foreground": "#FFFFFF"
+      },
+      "version": 1
+    }
+  ]
+}
