@@ -9,6 +9,7 @@ class CardMeta extends Table {
   TextColumn get bankName => text()();
   TextColumn get cardType => text()();
   TextColumn get nickname => text().nullable()();
+  TextColumn get last4 => text().nullable()();
   TextColumn get faceId => text().nullable()();
   TextColumn get customFace => text().nullable()();
   RealColumn get balance => real().nullable()();

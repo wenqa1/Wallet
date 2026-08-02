@@ -4,6 +4,8 @@ import 'package:drift_flutter/drift_flutter.dart';
 import 'card_face_table.dart';
 import 'card_table.dart';
 
+export 'package:drift/drift.dart' show Value;
+
 part 'app_database.g.dart';
 
 /// 本地数据库：仅存非敏感元数据。

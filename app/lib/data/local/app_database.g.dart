@@ -62,6 +62,15 @@ class $CardMetaTable extends CardMeta
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _last4Meta = const VerificationMeta('last4');
+  @override
+  late final GeneratedColumn<String> last4 = GeneratedColumn<String>(
+    'last4',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _faceIdMeta = const VerificationMeta('faceId');
   @override
   late final GeneratedColumn<String> faceId = GeneratedColumn<String>(
@@ -167,6 +176,7 @@ class $CardMetaTable extends CardMeta
     bankName,
     cardType,
     nickname,
+    last4,
     faceId,
     customFace,
     balance,
@@ -222,6 +232,12 @@ class $CardMetaTable extends CardMeta
       context.handle(
         _nicknameMeta,
         nickname.isAcceptableOrUnknown(data['nickname']!, _nicknameMeta),
+      );
+    }
+    if (data.containsKey('last4')) {
+      context.handle(
+        _last4Meta,
+        last4.isAcceptableOrUnknown(data['last4']!, _last4Meta),
       );
     }
     if (data.containsKey('face_id')) {
@@ -314,6 +330,10 @@ class $CardMetaTable extends CardMeta
         DriftSqlType.string,
         data['${effectivePrefix}nickname'],
       ),
+      last4: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}last4'],
+      ),
       faceId: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}face_id'],
@@ -365,6 +385,7 @@ class CardMetaData extends DataClass implements Insertable<CardMetaData> {
   final String bankName;
   final String cardType;
   final String? nickname;
+  final String? last4;
   final String? faceId;
   final String? customFace;
   final double? balance;
@@ -380,6 +401,7 @@ class CardMetaData extends DataClass implements Insertable<CardMetaData> {
     required this.bankName,
     required this.cardType,
     this.nickname,
+    this.last4,
     this.faceId,
     this.customFace,
     this.balance,
@@ -399,6 +421,9 @@ class CardMetaData extends DataClass implements Insertable<CardMetaData> {
     map['card_type'] = Variable<String>(cardType);
     if (!nullToAbsent || nickname != null) {
       map['nickname'] = Variable<String>(nickname);
+    }
+    if (!nullToAbsent || last4 != null) {
+      map['last4'] = Variable<String>(last4);
     }
     if (!nullToAbsent || faceId != null) {
       map['face_id'] = Variable<String>(faceId);
@@ -431,6 +456,9 @@ class CardMetaData extends DataClass implements Insertable<CardMetaData> {
       nickname: nickname == null && nullToAbsent
           ? const Value.absent()
           : Value(nickname),
+      last4: last4 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(last4),
       faceId: faceId == null && nullToAbsent
           ? const Value.absent()
           : Value(faceId),
@@ -464,6 +492,7 @@ class CardMetaData extends DataClass implements Insertable<CardMetaData> {
       bankName: serializer.fromJson<String>(json['bankName']),
       cardType: serializer.fromJson<String>(json['cardType']),
       nickname: serializer.fromJson<String?>(json['nickname']),
+      last4: serializer.fromJson<String?>(json['last4']),
       faceId: serializer.fromJson<String?>(json['faceId']),
       customFace: serializer.fromJson<String?>(json['customFace']),
       balance: serializer.fromJson<double?>(json['balance']),
@@ -486,6 +515,7 @@ class CardMetaData extends DataClass implements Insertable<CardMetaData> {
       'bankName': serializer.toJson<String>(bankName),
       'cardType': serializer.toJson<String>(cardType),
       'nickname': serializer.toJson<String?>(nickname),
+      'last4': serializer.toJson<String?>(last4),
       'faceId': serializer.toJson<String?>(faceId),
       'customFace': serializer.toJson<String?>(customFace),
       'balance': serializer.toJson<double?>(balance),
@@ -504,6 +534,7 @@ class CardMetaData extends DataClass implements Insertable<CardMetaData> {
     String? bankName,
     String? cardType,
     Value<String?> nickname = const Value.absent(),
+    Value<String?> last4 = const Value.absent(),
     Value<String?> faceId = const Value.absent(),
     Value<String?> customFace = const Value.absent(),
     Value<double?> balance = const Value.absent(),
@@ -519,6 +550,7 @@ class CardMetaData extends DataClass implements Insertable<CardMetaData> {
     bankName: bankName ?? this.bankName,
     cardType: cardType ?? this.cardType,
     nickname: nickname.present ? nickname.value : this.nickname,
+    last4: last4.present ? last4.value : this.last4,
     faceId: faceId.present ? faceId.value : this.faceId,
     customFace: customFace.present ? customFace.value : this.customFace,
     balance: balance.present ? balance.value : this.balance,
@@ -538,6 +570,7 @@ class CardMetaData extends DataClass implements Insertable<CardMetaData> {
       bankName: data.bankName.present ? data.bankName.value : this.bankName,
       cardType: data.cardType.present ? data.cardType.value : this.cardType,
       nickname: data.nickname.present ? data.nickname.value : this.nickname,
+      last4: data.last4.present ? data.last4.value : this.last4,
       faceId: data.faceId.present ? data.faceId.value : this.faceId,
       customFace: data.customFace.present
           ? data.customFace.value
@@ -564,6 +597,7 @@ class CardMetaData extends DataClass implements Insertable<CardMetaData> {
           ..write('bankName: $bankName, ')
           ..write('cardType: $cardType, ')
           ..write('nickname: $nickname, ')
+          ..write('last4: $last4, ')
           ..write('faceId: $faceId, ')
           ..write('customFace: $customFace, ')
           ..write('balance: $balance, ')
@@ -584,6 +618,7 @@ class CardMetaData extends DataClass implements Insertable<CardMetaData> {
     bankName,
     cardType,
     nickname,
+    last4,
     faceId,
     customFace,
     balance,
@@ -603,6 +638,7 @@ class CardMetaData extends DataClass implements Insertable<CardMetaData> {
           other.bankName == this.bankName &&
           other.cardType == this.cardType &&
           other.nickname == this.nickname &&
+          other.last4 == this.last4 &&
           other.faceId == this.faceId &&
           other.customFace == this.customFace &&
           other.balance == this.balance &&
@@ -620,6 +656,7 @@ class CardMetaCompanion extends UpdateCompanion<CardMetaData> {
   final Value<String> bankName;
   final Value<String> cardType;
   final Value<String?> nickname;
+  final Value<String?> last4;
   final Value<String?> faceId;
   final Value<String?> customFace;
   final Value<double?> balance;
@@ -636,6 +673,7 @@ class CardMetaCompanion extends UpdateCompanion<CardMetaData> {
     this.bankName = const Value.absent(),
     this.cardType = const Value.absent(),
     this.nickname = const Value.absent(),
+    this.last4 = const Value.absent(),
     this.faceId = const Value.absent(),
     this.customFace = const Value.absent(),
     this.balance = const Value.absent(),
@@ -653,6 +691,7 @@ class CardMetaCompanion extends UpdateCompanion<CardMetaData> {
     required String bankName,
     required String cardType,
     this.nickname = const Value.absent(),
+    this.last4 = const Value.absent(),
     this.faceId = const Value.absent(),
     this.customFace = const Value.absent(),
     this.balance = const Value.absent(),
@@ -675,6 +714,7 @@ class CardMetaCompanion extends UpdateCompanion<CardMetaData> {
     Expression<String>? bankName,
     Expression<String>? cardType,
     Expression<String>? nickname,
+    Expression<String>? last4,
     Expression<String>? faceId,
     Expression<String>? customFace,
     Expression<double>? balance,
@@ -692,6 +732,7 @@ class CardMetaCompanion extends UpdateCompanion<CardMetaData> {
       if (bankName != null) 'bank_name': bankName,
       if (cardType != null) 'card_type': cardType,
       if (nickname != null) 'nickname': nickname,
+      if (last4 != null) 'last4': last4,
       if (faceId != null) 'face_id': faceId,
       if (customFace != null) 'custom_face': customFace,
       if (balance != null) 'balance': balance,
@@ -711,6 +752,7 @@ class CardMetaCompanion extends UpdateCompanion<CardMetaData> {
     Value<String>? bankName,
     Value<String>? cardType,
     Value<String?>? nickname,
+    Value<String?>? last4,
     Value<String?>? faceId,
     Value<String?>? customFace,
     Value<double?>? balance,
@@ -728,6 +770,7 @@ class CardMetaCompanion extends UpdateCompanion<CardMetaData> {
       bankName: bankName ?? this.bankName,
       cardType: cardType ?? this.cardType,
       nickname: nickname ?? this.nickname,
+      last4: last4 ?? this.last4,
       faceId: faceId ?? this.faceId,
       customFace: customFace ?? this.customFace,
       balance: balance ?? this.balance,
@@ -758,6 +801,9 @@ class CardMetaCompanion extends UpdateCompanion<CardMetaData> {
     }
     if (nickname.present) {
       map['nickname'] = Variable<String>(nickname.value);
+    }
+    if (last4.present) {
+      map['last4'] = Variable<String>(last4.value);
     }
     if (faceId.present) {
       map['face_id'] = Variable<String>(faceId.value);
@@ -800,6 +846,7 @@ class CardMetaCompanion extends UpdateCompanion<CardMetaData> {
           ..write('bankName: $bankName, ')
           ..write('cardType: $cardType, ')
           ..write('nickname: $nickname, ')
+          ..write('last4: $last4, ')
           ..write('faceId: $faceId, ')
           ..write('customFace: $customFace, ')
           ..write('balance: $balance, ')
@@ -1552,6 +1599,7 @@ typedef $$CardMetaTableCreateCompanionBuilder =
       required String bankName,
       required String cardType,
       Value<String?> nickname,
+      Value<String?> last4,
       Value<String?> faceId,
       Value<String?> customFace,
       Value<double?> balance,
@@ -1570,6 +1618,7 @@ typedef $$CardMetaTableUpdateCompanionBuilder =
       Value<String> bankName,
       Value<String> cardType,
       Value<String?> nickname,
+      Value<String?> last4,
       Value<String?> faceId,
       Value<String?> customFace,
       Value<double?> balance,
@@ -1613,6 +1662,11 @@ class $$CardMetaTableFilterComposer
 
   ColumnFilters<String> get nickname => $composableBuilder(
     column: $table.nickname,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get last4 => $composableBuilder(
+    column: $table.last4,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -1696,6 +1750,11 @@ class $$CardMetaTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get last4 => $composableBuilder(
+    column: $table.last4,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get faceId => $composableBuilder(
     column: $table.faceId,
     builder: (column) => ColumnOrderings(column),
@@ -1765,6 +1824,9 @@ class $$CardMetaTableAnnotationComposer
 
   GeneratedColumn<String> get nickname =>
       $composableBuilder(column: $table.nickname, builder: (column) => column);
+
+  GeneratedColumn<String> get last4 =>
+      $composableBuilder(column: $table.last4, builder: (column) => column);
 
   GeneratedColumn<String> get faceId =>
       $composableBuilder(column: $table.faceId, builder: (column) => column);
@@ -1836,6 +1898,7 @@ class $$CardMetaTableTableManager
                 Value<String> bankName = const Value.absent(),
                 Value<String> cardType = const Value.absent(),
                 Value<String?> nickname = const Value.absent(),
+                Value<String?> last4 = const Value.absent(),
                 Value<String?> faceId = const Value.absent(),
                 Value<String?> customFace = const Value.absent(),
                 Value<double?> balance = const Value.absent(),
@@ -1852,6 +1915,7 @@ class $$CardMetaTableTableManager
                 bankName: bankName,
                 cardType: cardType,
                 nickname: nickname,
+                last4: last4,
                 faceId: faceId,
                 customFace: customFace,
                 balance: balance,
@@ -1870,6 +1934,7 @@ class $$CardMetaTableTableManager
                 required String bankName,
                 required String cardType,
                 Value<String?> nickname = const Value.absent(),
+                Value<String?> last4 = const Value.absent(),
                 Value<String?> faceId = const Value.absent(),
                 Value<String?> customFace = const Value.absent(),
                 Value<double?> balance = const Value.absent(),
@@ -1886,6 +1951,7 @@ class $$CardMetaTableTableManager
                 bankName: bankName,
                 cardType: cardType,
                 nickname: nickname,
+                last4: last4,
                 faceId: faceId,
                 customFace: customFace,
                 balance: balance,

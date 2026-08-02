@@ -30,7 +30,7 @@ void main() {
   setUp(() {
     db = AppDatabase.forTesting(NativeDatabase.memory());
     store = InMemorySecretStore();
-    repo = CardRepository(db, store);
+    repo = DriftCardRepository(db, store);
   });
 
   tearDown(() async => db.close());

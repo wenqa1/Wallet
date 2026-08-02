@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:flutter/material.dart' show Colors;
+
 /// 卡面资源模型。
 ///
 /// assetType:
@@ -32,6 +34,26 @@ class CardFace {
   final String? logoText;
   final Color? foreground;
   final int version;
+
+  /// 由银行主题色合成一个渐变卡面（合规方案，无需图片资产）。
+  factory CardFace.gradientFor({
+    required String bankCode,
+    required String bankName,
+    required Color color,
+    List<String> cardTypes = const ['debit', 'credit'],
+  }) {
+    final end = Color.lerp(color, Colors.black, 0.35) ?? color;
+    return CardFace(
+      faceId: 'grad-$bankCode',
+      bankCode: bankCode,
+      bankName: bankName,
+      cardTypes: cardTypes,
+      assetType: 'gradient',
+      version: 1,
+      colors: [color, end],
+      logoText: bankCode,
+    );
+  }
 
   factory CardFace.fromJson(Map<String, dynamic> json) {
     final fallback = (json['fallback'] as Map<String, dynamic>?) ?? const {};

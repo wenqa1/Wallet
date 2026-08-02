@@ -18,6 +18,13 @@ String maskCardNumber(String number) {
 String formatCardNumber(String digits) =>
     _group4(digits.replaceAll(RegExp(r'\D'), ''));
 
+/// 卡号后四位；少于四位返回原数字。用于列表展示，无需读 Keychain。
+String last4Of(String number) {
+  final digits = number.replaceAll(RegExp(r'\D'), '');
+  if (digits.isEmpty) return '';
+  return digits.length <= 4 ? digits : digits.substring(digits.length - 4);
+}
+
 String _group4(String value) {
   final parts = <String>[];
   for (var i = 0; i < value.length; i += 4) {

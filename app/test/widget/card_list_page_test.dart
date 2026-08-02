@@ -43,7 +43,7 @@ void main() {
   });
 
   testWidgets('从仓储读取并展示卡片', (tester) async {
-    await tester.runAsync(() => harness.repo.insertCard(metaFor('l1')));
+    harness.repo.seed(metaFor('l1'));
 
     await pumpList(tester);
 
@@ -58,9 +58,7 @@ void main() {
   });
 
   testWidgets('删除需二次确认', (tester) async {
-    await tester.runAsync(
-      () => harness.repo.insertCard(metaFor('l2', nickname: '待删卡')),
-    );
+    harness.repo.seed(metaFor('l2', nickname: '待删卡'));
 
     await pumpList(tester);
 
@@ -72,9 +70,7 @@ void main() {
     await tester.pump();
     await tester.pumpAndSettle();
 
-    final cards = await tester.runAsync(
-      () => harness.repo.watchAllCards().first,
-    );
+    final cards = await harness.repo.watchAllCards().first;
     expect(cards, isEmpty);
   });
 }
