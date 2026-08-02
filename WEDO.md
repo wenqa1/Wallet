@@ -130,3 +130,22 @@
 **待用户**：Codemagic 重新触发 `ios-trollstore` 构建
 
 ---
+
+## 2026-08-03 02:30 · M3 相机 OCR 读卡
+
+**做了什么**（TDD，3A 纯逻辑 → 3B 状态机 → 3C UI 三层，各 RED→GREEN）
+- **3A** `CardScanParser`：从 OCR 文本行提取 Luhn 合法卡号（13~19 位、容行首干扰）、卡号上一行姓名、同/邻行有效期 MM/YY
+- **3B** `CardScanController`：状态机 idle/scanning/found/error，同卡号连续 N 帧稳定进入 found、卡号变化重置；`OcrRecognizer` 抽象 + `MlKitOcrRecognizer`（端侧识别）
+- **3C** `CardScanPage`：相机实时帧 OCR（CameraImage→InputImage→ML Kit→controller）、取景框、稳定命中弹 `ScanResultCard`（重新扫描/确认使用）；表单卡号框加相机扫描入口，回填卡号/持卡人/有效期
+
+**验证结果**
+- `flutter analyze`：零问题
+- **56 个测试全部通过**（新增 20：解析器 10 + 控制器 7 + 结果卡 2 + 表单扫描入口 1）
+
+**说明**：相机/ML Kit 无法在 widget 测试环境运行，`CardScanPage` 的实时帧识别需**真机验收**（iOS 相机格式为 BGRA8888，Android 为 NV21）。
+
+**提交**：解析器 RED/GREEN → 控制器 RED/GREEN → 结果卡/扫描页/表单 GREEN
+
+**下一步** → M4：钱包式轮播 UI + 卡面网络增量更新（manifest 协议 + 下载）
+
+---

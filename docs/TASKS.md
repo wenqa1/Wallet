@@ -45,12 +45,12 @@
 
 ## M3 · 相机 OCR 读卡（1 周）
 
-- [ ] 相机权限流程 + 扫描页 UI（取景框、高亮框）
-- [ ] 实时帧 OCR（`google_mlkit_text_recognition`）
-- [ ] 卡号提取 + Luhn 校验 + 多候选选择
-- [ ] 有效期 / 姓名辅助识别
-- [ ] 结果确认表单（可修正、可重扫）
-- [ ] **里程碑验收**：真机对着储蓄卡/信用卡各扫一张，卡号准确回填
+- [x] 相机权限流程 + 扫描页 UI（取景框、提示文案，权限描述已加 Info.plist）
+- [x] 实时帧 OCR（`google_mlkit_text_recognition`，`MlKitOcrRecognizer` 端侧识别）
+- [x] 卡号提取 + Luhn 校验 + 多候选（`CardScanParser` + `CardScanController` 稳定帧确认）
+- [x] 有效期 / 姓名辅助识别（同/邻行 MM/YY + 卡号上一行大写姓名）
+- [x] 结果确认表单（`ScanResultCard`：可修正、可重扫）
+- [ ] **里程碑验收**：真机对着储蓄卡/信用卡各扫一张，卡号准确回填（需真机，相机/ML Kit 无法在测试环境跑）
 
 ## M4 · 钱包式 UI + 卡面网络更新（1 周）
 
