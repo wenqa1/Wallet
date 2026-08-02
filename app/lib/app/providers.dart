@@ -11,13 +11,16 @@ final appDatabaseProvider = Provider<AppDatabase>((ref) {
   return db;
 });
 
-final secureStorageServiceProvider = Provider<SecureStorageService>(
-  (ref) => SecureStorageService(),
-);
+final secretStoreProvider = Provider<SecretStore>((ref) {
+  return SecureStorageService();
+});
 
-final cardRepositoryProvider = Provider<CardRepository>(
-  (ref) => CardRepository(ref.watch(appDatabaseProvider)),
-);
+final cardRepositoryProvider = Provider<CardRepository>((ref) {
+  return CardRepository(
+    ref.watch(appDatabaseProvider),
+    ref.watch(secretStoreProvider),
+  );
+});
 
 final cardFaceRepositoryProvider = Provider<CardFaceRepository>(
   (ref) => const CardFaceRepository(),

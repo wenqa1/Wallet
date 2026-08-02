@@ -75,7 +75,10 @@ void main() {
     });
 
     test('updateCard 更新元数据并可更新敏感字段', () async {
-      await repo.insertCard(metaFor('c3'), secret: const CardSecret(cardNumber: '1' * 16));
+      await repo.insertCard(
+        metaFor('c3'),
+        secret: CardSecret(cardNumber: '1' * 16),
+      );
       await repo.updateCard(
         CardMetaCompanion.insert(
           id: 'c3',
@@ -85,7 +88,7 @@ void main() {
           createdAt: DateTime(2026, 1, 1),
           updatedAt: DateTime(2026, 1, 2),
         ),
-        secret: const CardSecret(cardNumber: '2' * 16, cvv: '999'),
+        secret: CardSecret(cardNumber: '2' * 16, cvv: '999'),
       );
 
       final meta = await repo.getCardById('c3');
@@ -98,7 +101,7 @@ void main() {
     test('deleteCard 同时清除元数据与敏感字段', () async {
       await repo.insertCard(
         metaFor('c4'),
-        secret: const CardSecret(cardNumber: '3' * 16),
+        secret: CardSecret(cardNumber: '3' * 16),
       );
 
       await repo.deleteCard('c4');
