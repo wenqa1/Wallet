@@ -14,15 +14,21 @@ class CardFaceUpdateResult {
   final String? message;
 }
 
+/// 卡面增量更新抽象，测试可注入 fake。
+abstract interface class CardFaceUpdateService {
+  Future<CardFaceUpdateResult> checkForUpdates();
+}
+
 /// 卡面增量更新：拉取清单 → 版本比较 → 下载变更图片 → 保存。
 ///
 /// 任何失败都静默回退（返回 failure），不影响内置卡面使用。
-class CardFaceUpdateService {
-  CardFaceUpdateService({required this.api, required this.store});
+class NetworkCardFaceUpdateService implements CardFaceUpdateService {
+  NetworkCardFaceUpdateService({required this.api, required this.store});
 
   final CardFaceRemoteApi api;
   final CardFaceStore store;
 
+  @override
   Future<CardFaceUpdateResult> checkForUpdates() async {
     try {
       final current = await store.currentManifestVersion();

@@ -25,7 +25,17 @@ class CardListPage extends ConsumerWidget {
     final facesAsync = ref.watch(allFacesProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('卡包')),
+      appBar: AppBar(
+        title: const Text('卡包'),
+        actions: [
+          IconButton(
+            key: const Key('settings_button'),
+            icon: const Icon(Icons.settings_outlined),
+            tooltip: '设置',
+            onPressed: () => context.push('/settings'),
+          ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         key: const Key('add_card_button'),
         onPressed: () => context.push('/add'),

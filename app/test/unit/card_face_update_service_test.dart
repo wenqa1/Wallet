@@ -78,7 +78,7 @@ void main() {
   setUp(() {
     api = FakeRemoteApi();
     store = FakeFaceStore();
-    service = CardFaceUpdateService(api: api, store: store);
+    service = NetworkCardFaceUpdateService(api: api, store: store);
   });
 
   group('CardFaceUpdateService.checkForUpdates', () {

@@ -4,6 +4,7 @@ import '../core/constants/bank_catalog.dart';
 import '../core/security/secure_storage_service.dart';
 import '../data/local/app_database.dart';
 import '../data/local/drift_card_face_store.dart';
+import '../data/local/settings_store.dart';
 import '../data/models/card_face.dart';
 import '../data/network/card_face_remote_api.dart';
 import '../data/repositories/card_face_repository.dart';
@@ -52,10 +53,19 @@ final cardFaceStoreProvider = Provider<CardFaceStore>((ref) {
 });
 
 final cardFaceUpdateServiceProvider = Provider<CardFaceUpdateService>((ref) {
-  return CardFaceUpdateService(
+  return NetworkCardFaceUpdateService(
     api: DioCardFaceRemoteApi(manifestUrl: cardFaceManifestUrl),
     store: ref.watch(cardFaceStoreProvider),
   );
+});
+
+final settingsStoreProvider = Provider<SettingsStore>((ref) {
+  return SharedPreferencesSettingsStore();
+});
+
+/// 卡号遮挡自动隐藏时长（秒），默认 5。
+final maskAutoHideProvider = FutureProvider<int>((ref) {
+  return ref.watch(settingsStoreProvider).maskAutoHideSeconds();
 });
 
 /// 已下载的远程卡面。
