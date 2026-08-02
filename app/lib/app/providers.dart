@@ -6,6 +6,7 @@ import '../data/local/app_database.dart';
 import '../data/local/drift_card_face_store.dart';
 import '../data/local/settings_store.dart';
 import '../data/models/card_face.dart';
+import '../data/models/card_secret.dart';
 import '../data/network/card_face_remote_api.dart';
 import '../data/repositories/card_face_repository.dart';
 import '../data/repositories/card_face_store.dart';
@@ -28,6 +29,11 @@ final cardRepositoryProvider = Provider<CardRepository>((ref) {
     ref.watch(secretStoreProvider),
   );
 });
+
+/// 某张卡的敏感字段（从 Keychain 读取）。
+final cardSecretProvider = FutureProvider.family<CardSecret?, String>(
+  (ref, cardId) => ref.watch(cardRepositoryProvider).readSecret(cardId),
+);
 
 final cardFaceRepositoryProvider = Provider<CardFaceRepository>(
   (ref) => const CardFaceRepository(),

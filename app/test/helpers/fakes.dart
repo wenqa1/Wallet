@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kabao/app/providers.dart';
 import 'package:kabao/core/constants/bank_catalog.dart';
 import 'package:kabao/data/local/app_database.dart';
+import 'package:kabao/data/local/settings_store.dart';
 import 'package:kabao/data/models/card_face.dart';
 import 'package:kabao/data/models/card_secret.dart';
 import 'package:kabao/data/repositories/card_repository.dart';
@@ -91,11 +92,25 @@ class FakeCardRepository implements CardRepository {
   }
 }
 
-/// 测试夹具：fake 仓储 + 固定银行目录。
+/// 内存版设置存储，测试用。
+class FakeSettingsStore implements SettingsStore {
+  int seconds = 5;
+
+  @override
+  Future<int> maskAutoHideSeconds() async => seconds;
+
+  @override
+  Future<void> setMaskAutoHideSeconds(int seconds) async {
+    this.seconds = seconds;
+  }
+}
+
+/// 测试夹具：fake 仓储 + 固定银行目录 + 内存设置。
 class TestHarness {
   TestHarness();
 
   final FakeCardRepository repo = FakeCardRepository();
+  final FakeSettingsStore settings = FakeSettingsStore();
 
   ProviderScope scope({required Widget child}) {
     return ProviderScope(
@@ -104,6 +119,7 @@ class TestHarness {
         bankCatalogProvider.overrideWith((ref) async => testBanks),
         bundledFacesProvider.overrideWith((ref) async => testFaces),
         allFacesProvider.overrideWith((ref) async => testFaces),
+        settingsStoreProvider.overrideWithValue(settings),
       ],
       child: child,
     );
