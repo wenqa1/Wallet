@@ -94,11 +94,13 @@
   - 敏感信息遮挡（卡号后四位展示）✅；Keychain 敏感字段存储 ✅
 
 **iOS 打包（无 Mac → 云端）**
-- **本机是 Windows，无法直接产出 .ipa**（需要 macOS/Xcode）
-- 已配置 **Codemagic 云端流水线** `codemagic.yaml`：push main → pub get → analyze → test → `flutter build ipa --release` → 上传 TestFlight
+- **本机是 Windows，无法直接产出 .ipa**（需要 macOS/Xcode）——这与签名/越狱无关
+- 已配置 **Codemagic 云端流水线** `codemagic.yaml`，含两个工作流：
+  - `ios-trollstore`：**无签名 IPA**（用户越狱 + 巨魔商店，免费，无需 $99 开发者账号）→ 推荐
+  - `ios-release`：有签名 IPA → TestFlight（需开发者账号，备选）
 - iOS 配置补充：显示名「卡包」、`NSCameraUsageDescription`（OCR 用）、`NSPhotoLibraryUsageDescription`（自定义卡面相册背景）
-- 打包发布完整指南见 **docs/BUILD.md**
-- 待用户操作：Apple Developer 账号 + App Store Connect API Key + 推远端仓库 + Codemagic 绑定
+- 打包发布完整指南见 **docs/BUILD.md**（巨魔方案优先）
+- 待用户操作：推远端仓库 + Codemagic 免费绑定 → 云端出无签名 IPA → 巨魔商店直装
 
 **其他**
 - 保存记忆：项目约束 + 「每任务调用对应 skill」工作偏好

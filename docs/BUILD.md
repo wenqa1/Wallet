@@ -1,86 +1,88 @@
-# 打包与发布指南（无 Mac → 云端 IPA）
+# 打包与发布指南
 
-> 本机是 **Windows 无 Mac**，iOS 的 `.ipa` 无法本地生成（`flutter build ipa` 需要 macOS/Xcode）。
-> 项目已配置 **Codemagic 云端构建**（[codemagic.yaml](../codemagic.yaml)），一键出包并上传 TestFlight。
+> 本机是 **Windows 无 Mac**。无论是否越狱，iOS 的 `.ipa` **都必须**在 macOS 上编译（`flutter build` iOS 只支持 macOS/Xcode 宿主）。但「签名 + 上架」这一步可以绕开：**越狱 + 巨魔商店** 让你免去 $99/年 开发者账号。
 
-## 0. 需要准备的东西
+## 方案对比
 
-| 项 | 说明 | 花费 |
+| | 🥇 巨魔商店（TrollStore） | App Store / TestFlight |
 |---|---|---|
-| Apple Developer Program | 开发者账号，签名与 TestFlight 必需 | 约 $99/年 |
-| App Store Connect API Key | 供 Codemagic 自动签名 + 上传 | 免费 |
-| Git 远端仓库 | GitHub / Gitee / GitLab | 免费 |
-| Codemagic 账号 | 云端 macOS 构建 | 免费额度 |
+| 需要 Mac | ❌ 云端即可（Codemagic 免费） | ❌ 云端即可 |
+| Apple Developer 账号 | ❌ **不需要** | ✅ 约 $99/年 |
+| 签名 / 证书 / 密钥 | ❌ 不需要 | ✅ 需要 |
+| 成本 | **0 元** | $99/年 |
+| 安装方式 | 手机打开 IPA → 巨魔装 | TestFlight / App Store |
+| 适用 | 越狱 + 巨魔支持的系统版本 | 普通设备 |
 
-> 免费 Apple ID 无法脱离 Xcode 侧载，本项目必须付费开发者账号。
+> 巨魔商店支持范围：iOS 14.0–16.6.1、17.0（CoreTrust 漏洞 / kfd）。你的 iOS 16~17 设备只要在支持列表内即可。
 
-## 1. 推送代码到远端
+---
+
+## 方案 A：巨魔商店（推荐，免费）
+
+### 1. 推代码到远端
 
 ```bash
 cd e:/lianxi/kabao
-git remote add origin <你的仓库地址>
+git remote add origin <免费仓库地址，如 GitHub/Gitee>
 git push -u origin main
 ```
 
-## 2. 配置 Codemagic
+### 2. 绑定 Codemagic（免费）
 
-1. 打开 [codemagic.io](https://codemagic.io) → 登录 → **Add application** → 选择你的仓库。
-2. 项目设置 → **Environment variables** 添加：
-   - `APP_STORE_CONNECT_KEY_IDENTIFIER` — App Store Connect API Key 的 Key ID
-   - `APP_STORE_CONNECT_ISSUER_ID` — Issuer ID
-   - `APP_STORE_CONNECT_PRIVATE_KEY` — API Key 的 `.p8` 私钥内容
-3. 把 [codemagic.yaml](../codemagic.yaml) 里的两个占位改成你的：
-   - `APP_STORE_APP_ID` → App Store Connect 中 App 的 Apple ID（纯数字）
-   - 邮箱收件人 → 你的邮箱
-4. 在 App Store Connect 创建 App（Bundle ID 填 `com.kabao.kabao`），不填即可上 TestFlight。
+1. 打开 [codemagic.io](https://codemagic.io) → 登录（免费）→ **Add application** → 选你的仓库。
+2. 仓库根目录已有 [codemagic.yaml](../codemagic.yaml)，其中 `ios-trollstore` 工作流会：
+   - `pub get` → `flutter analyze` → `flutter test` → `flutter build ipa --release --no-codesign`
+   - 产出 **无签名 IPA**，不碰任何 Apple 凭据。
+3. 推送 `main` 自动触发；也可在页面手动 **Start new build**（选 `ios-trollstore`）。
 
-### App Store Connect API Key 在哪生成
-[App Store Connect](https://appstoreconnect.apple.com) → 用户与访问 → 密钥 → App Store Connect API → 生成密钥（勾选 **App Manager** 权限）→ 保存 `.p8` 文件。
+### 3. 拿到 IPA 并装到手机
 
-## 3. 触发构建
+1. 构建完成后，从 Codemagic **Artifacts** 下载 `*.ipa`（或 `Runner.ipa` 兜底产物）。
+2. 把 IPA 传到你手机（AirDrop / 网盘 / 微信文件 / 数据线）。
+3. 手机用 **文件 App** 打开 IPA → 分享到 **巨魔商店** → 点击安装。
+4. 主屏幕出现「卡包」即可使用。
 
-- 推送到 `main` 分支自动触发；或 Codemagic 页面点 **Start new build**。
-- 流水线会依次执行：`pub get` → `flutter analyze` → `flutter test` → `flutter build ipa --release` → 上传 TestFlight。
+### 注意事项
+- 巨魔商店要求 App 的 Bundle ID 不与已装 App 冲突（本项目 `com.kabao.kabao`）。
+- 每次改代码重出包，直接覆盖安装即可，数据保留。
+- 无签名 IPA 不能用于非越狱设备。
 
-## 4. 安装到 iPhone
+---
 
-1. TestFlight 中邀请你的 Apple ID（或设备 UDID 注册）。
-2. iPhone 安装 **TestFlight** App → 接受邀请 → 安装「卡包」。
+## 方案 B：App Store / TestFlight（普通设备）
 
-## 5. 备选方案：GitHub Actions（自建）
+> 仅当你需要在不越狱的 iPhone 上使用，或想公开分发时才需要。
 
-若不用 Codemagic，可在仓库加 `.github/workflows/ios.yml`：
+### 需要准备
+| 项 | 说明 |
+|---|---|
+| Apple Developer Program | 约 $99/年 |
+| App Store Connect API Key | 供 Codemagic 自动签名 + 上传（用户与访问 → 密钥 → App Store Connect API，勾选 App Manager） |
+| Git 远端仓库 | 同方案 A |
 
-```yaml
-name: iOS build
-on: [push]
-jobs:
-  build:
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: subosito/flutter-action@v2
-        with: { channel: stable }
-      - run: flutter pub get
-      - run: flutter build ipa --release --no-codesign
-      - uses: actions/upload-artifact@v4
-        with: { name: ipa, path: build/ios/ipa/*.ipa }
-```
+### 步骤
+1. 同方案 A 推代码、绑定 Codemagic。
+2. 在 Codemagic 设置 **Environment variables**：
+   - `APP_STORE_CONNECT_KEY_IDENTIFIER` / `APP_STORE_CONNECT_ISSUER_ID` / `APP_STORE_CONNECT_PRIVATE_KEY`
+3. 把 [codemagic.yaml](../codemagic.yaml) 中 `ios-release` 工作流的占位改成你的：`APP_STORE_APP_ID`、收件邮箱。
+4. App Store Connect 创建 App（Bundle ID `com.kabao.kabao`）。
+5. 推送到 `release/*` 分支触发 → 自动上传 TestFlight → iPhone 装 TestFlight 安装。
 
-> `--no-codesign` 只出无签名 IPA（真机装不上）；要装真机仍需要证书/密钥（fastlane match 或 `apple-actions/import-codesigning-certs`）。
+---
 
-## 6. 版本号约定
+## 版本号
 
-`codemagic.yaml` 已按 `git rev-list --count HEAD` 生成 build number，build name 固定 `1.0.0`（正式发布时改为从 tag 取）。
+两个工作流都用 `git rev-list --count HEAD` 生成 build number，build name 固定 `1.0.0`（正式发布改为从 tag 取）。
 
-## 7. 常见问题
+## 常见问题
 
-- **签名失败**：检查 API Key 权限是否为 App Manager；Bundle ID 与 App Store Connect 一致。
-- **TestFlight 上传成功但设备装不上**：确认设备已在 TestFlight 邀请名单。
-- **审核被拒**：本应用定位为「本地卡包记录工具」，隐私标签声明「未收集数据、敏感信息仅存本机」，一般可通过。
+- **巨魔装了打不开/闪退**：确认系统版本在支持范围；重新出包覆盖安装。
+- **TestFlight 上传成功但装不上**：设备需在 TestFlight 邀请名单。
+- **App Store 审核**：定位「本地卡包记录工具」，隐私标签如实声明，一般可通过。
+- **为什么 Windows 不能本地打 IPA**：iOS 编译需要 macOS + Xcode（clang 交叉编译链）。云端 macOS 是唯一路径，与是否签名/越狱无关。
 
-## 8. 相关文件
+## 相关文件
 
-- [codemagic.yaml](../codemagic.yaml) — 云端构建流水线
+- [codemagic.yaml](../codemagic.yaml) — 云端构建流水线（巨魔 + TestFlight 双工作流）
 - [README.md](../README.md) — 快速开始
-- [docs/TECH.md](TECH.md) — 技术设计（含云端构建章节）
+- [docs/TECH.md](TECH.md) — 技术设计

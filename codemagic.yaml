@@ -1,13 +1,57 @@
-# Codemagic 云端 IPA 构建流水线
+# Codemagic 云端 iOS 构建流水线
 #
-# 前提：本机无 Mac，iOS 打包必须在云端 macOS 构建。
+# 前提：本机 Windows 无 Mac，iOS 的 .ipa 必须在云端 macOS 构建（与签名/越狱无关）。
+#
+# 两个工作流：
+#   ios-release    → 有签名 + TestFlight（需要 Apple Developer 账号，$99/年）
+#   ios-trollstore → 无签名 IPA（越狱 + 巨魔商店直装，免费，无需开发者账号）
+#
 # 用法：
-#   1. 把本仓库推到 Git 远端（GitHub/Gitee/GitLab）
-#   2. 在 codemagic.io 绑定仓库，按 docs/BUILD.md 配置 Apple 签名凭据
-#   3. 手动触发或推 tag 触发本流水线
-#   4. 产物自动上传 TestFlight → iPhone 上 TestFlight 安装
+#   1. 把仓库推到 Git 远端（GitHub/Gitee/GitLab，免费）
+#   2. 在 codemagic.io 绑定仓库（免费额度足够）
+#   3. 触发对应 workflow，下载构建产物
 
 workflows:
+  # ---------- 方案 A：越狱 + 巨魔商店（推荐，免费） ----------
+  ios-trollstore:
+    name: iOS TrollStore (unsigned IPA)
+    max_build_duration: 45
+    environment:
+      flutter: stable
+      xcode: latest
+      cocoapods: default
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: main
+          include: true
+    scripts:
+      - name: Flutter pub get
+        script: flutter pub get
+      - name: Analyze
+        script: flutter analyze
+      - name: Run tests
+        script: flutter test
+      - name: Build unsigned IPA
+        script: |
+          flutter build ipa --release --no-codesign \
+            --build-name=1.0.0 \
+            --build-number=$(git rev-list --count HEAD)
+      # 兜底：若 ipa 未生成，把 Runner.app 手动打包为 IPA
+      - name: Package IPA manually (fallback)
+        script: |
+          if ! ls build/ios/ipa/*.ipa >/dev/null 2>&1 && [ -d build/ios/iphoneos/Runner.app ]; then
+            mkdir -p Payload
+            cp -R build/ios/iphoneos/Runner.app Payload/
+            ditto -c -k --keepParent Payload Runner.ipa
+          fi
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - Runner.ipa
+      - build/ios/iphoneos/Runner.app
+
+  # ---------- 方案 B：App Store / TestFlight（需要 $99/年 开发者账号） ----------
   ios-release:
     name: iOS Release (TestFlight)
     max_build_duration: 60
@@ -16,9 +60,8 @@ workflows:
       xcode: latest
       cocoapods: default
       # 在 Codemagic UI 的 Environment variables 中配置：
-      #   APP_STORE_APP_ID      = App Store Connect 中的应用 ID（纯数字）
+      #   APP_STORE_APP_ID = App Store Connect 应用 ID（纯数字）
       #   APP_STORE_CONNECT_KEY_IDENTIFIER / ISSUER_ID / PRIVATE_KEY = App Store Connect API Key
-      # 用于自动签名与上传 TestFlight。
       vars:
         APP_STORE_APP_ID: "REPLACE_WITH_APPLE_ID"
         BUNDLE_ID: "com.kabao.kabao"
@@ -26,26 +69,20 @@ workflows:
       events:
         - push
       branch_patterns:
-        - pattern: main
+        - pattern: release/*
           include: true
     scripts:
-      - name: Set build version from tag
-        script: |
-          set -e
-          export BUILD_NUMBER=$(git rev-list --count HEAD)
-          echo "Build number: $BUILD_NUMBER"
       - name: Flutter pub get
         script: flutter pub get
       - name: Analyze
         script: flutter analyze
       - name: Run tests
         script: flutter test
-      - name: Build IPA (release)
+      - name: Build signed IPA
         script: |
           flutter build ipa --release \
             --build-name=1.0.0 \
-            --build-number=$BUILD_NUMBER \
-            --export-options-plist=/dev/null
+            --build-number=$(git rev-list --count HEAD)
     artifacts:
       - build/ios/ipa/*.ipa
       - build/ios/ipa/*.dSYM.zip

@@ -57,8 +57,7 @@ kabao/
    flutter analyze             # 静态检查
    ```
 2. **本地跑 App（可选）**：需先开启 Windows 开发者模式（`start ms-settings:developers`），并安装 Visual Studio 的"使用 C++ 的桌面开发"工作负载，然后 `flutter run -d windows`。不装也能开发——代码以 iOS 云端构建为准。
-3. **iOS 出包**：本机无 Mac 无法本地打 `.ipa`，已配好 **Codemagic 云端流水线**（[codemagic.yaml](codemagic.yaml)）。步骤：推代码到 Git 仓库 → Codemagic 绑定 → 配置 Apple 签名 → 云端构建 → TestFlight 装到 iPhone。完整指南见 **[docs/BUILD.md](docs/BUILD.md)**。
-4. **前置条件**：需要 Apple Developer Program 会员（约 $99/年）。免费 Apple ID 无法脱离 Xcode 侧载，云端构建必须付费账号。
+3. **iOS 出包**：本机无 Mac，`.ipa` 必须在云端 macOS 构建（[codemagic.yaml](codemagic.yaml) 已配好）。**推荐巨魔商店方案**（免费，无需 $99 开发者账号）：推代码 → Codemagic 免费构建无签名 IPA → 手机打开 → 巨魔装。完整指南见 **[docs/BUILD.md](docs/BUILD.md)**。
 
 详见 [docs/TECH.md](docs/TECH.md) 与 [docs/BUILD.md](docs/BUILD.md)。
 
