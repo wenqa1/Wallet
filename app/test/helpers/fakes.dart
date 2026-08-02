@@ -46,6 +46,8 @@ class FakeCardRepository implements CardRepository {
     bankName: c.bankName.value,
     cardType: c.cardType.value,
     nickname: c.nickname.value,
+    faceId: c.faceId.value,
+    customFace: c.customFace.value,
     last4: c.last4.value,
     balance: c.balance.value,
     currency: c.currency.present ? c.currency.value : '¥',
