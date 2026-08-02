@@ -36,9 +36,17 @@ dev_dependencies:
   drift_dev: ^2.34.5
   mocktail: ^1.0.5
   fake_async: ^1.3.3
+  flutter_launcher_icons: ^0.14.1
 
 flutter:
   uses-material-design: true
   assets:
     - assets/card_faces/banks_cn.json
     - assets/card_faces/bundled_manifest.json
+    - assets/icon/app_icon.png
+
+flutter_launcher_icons:
+  ios: true
+  android: true
+  image_path: "assets/icon/app_icon.png"
+  remove_alpha_ios: true
