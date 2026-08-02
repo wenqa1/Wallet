@@ -62,6 +62,7 @@ void main() {
 
     await pumpList(tester);
 
+    // 点击卡片翻转到底部详情，再删除。
     await tester.tap(find.text('待删卡'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('删除'));
