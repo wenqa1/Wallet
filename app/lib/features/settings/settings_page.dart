@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../app/providers.dart';
 
@@ -82,6 +83,13 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               label: Text(_checking ? '检查中…' : '检查卡面更新'),
               onPressed: _checking ? null : _checkUpdate,
             ),
+          ),
+          const Divider(),
+          ListTile(
+            key: const Key('privacy_tile'),
+            leading: const Icon(Icons.privacy_tip_outlined),
+            title: const Text('隐私说明'),
+            onTap: () => context.push('/privacy'),
           ),
         ],
       ),

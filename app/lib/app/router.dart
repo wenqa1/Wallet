@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 
 import '../features/add_card/card_form_page.dart';
 import '../features/card_list/card_list_page.dart';
+import '../features/settings/privacy_page.dart';
 import '../features/settings/settings_page.dart';
 
 /// 全局路由表。
@@ -19,5 +20,6 @@ final appRouter = GoRouter(
       path: '/settings',
       builder: (context, state) => const SettingsPage(),
     ),
+    GoRoute(path: '/privacy', builder: (context, state) => const PrivacyPage()),
   ],
 );
