@@ -24,13 +24,14 @@
 
 ## M1 · 数据模型 + 安全存储 + 卡片 CRUD（1 周）
 
-- [ ] Drift 数据库初始化：`card_meta` 表 + DAO
-- [ ] Keychain 服务封装：`CardSecret` 读写删
-- [ ] `CardRepository`：组合 DB + Keychain 的事务读写
-- [ ] `luhn.dart` 单元测试（先 RED 后 GREEN）
-- [ ] 卡片添加表单（手动录入）+ 编辑 + 删除（二次确认）
-- [ ] 卡片列表（网格版即可）+ 搜索/排序
-- [ ] **里程碑验收**：手动添加一张卡 → 杀进程重开数据还在 → Keychain 里有卡号
+- [x] Drift 数据库初始化：`card_meta` 表 + DAO（含 `last4` 列）
+- [x] Keychain 服务封装：`SecretStore` 抽象 + `CardSecret` 读写删
+- [x] `CardRepository`（接口）+ `DriftCardRepository`：组合 DB + Keychain 增删改查
+- [x] `luhn.dart` 单元测试（先 RED 后 GREEN）
+- [x] 卡片添加表单（手动录入，Luhn 校验 + 卡面预览）+ 编辑 + 删除（二次确认）
+- [x] 卡片列表（网格版，FAB 添加，点卡底部操作单）
+- [ ] 搜索/排序（延后至 M1.5 或随卡片多时再补）
+- [ ] **里程碑验收**：手动添加一张卡 → 杀进程重开数据还在 → Keychain 里有卡号（需真机/模拟器验证）
 
 ## M2 · 卡面系统（1.5 周）
 
